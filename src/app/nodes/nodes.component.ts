@@ -1,7 +1,4 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, Observer } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 import { NodesTableComponent } from '../nodes-table/nodes-table.component';
 import { NodesTableItem } from '../nodes-table/nodes-table-datasource';
 import { NetworkService } from '../network/network.service';
@@ -54,7 +51,7 @@ export class NodesComponent implements OnInit {
   }
 
   isNetworkAvailable(): boolean {
-      return this.network.is_available();
+      return this.network.isAvailable();
   }
 
   constructor(private network: NetworkService) {}

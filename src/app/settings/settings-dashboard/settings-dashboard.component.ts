@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SettingsDashboardComponent implements OnInit {
 
   network_state: string = "unknown";
-  server_state: string = "unknown";
+  driver_state: string = "unknown";
   network_status: SimpleStatusItem = undefined;
 
   constructor(private network: NetworkService,
@@ -23,7 +23,7 @@ export class SettingsDashboardComponent implements OnInit {
         if (!!status) {
           this.network_status = status;
           this.network_state = status.network_state;
-          this.server_state = status.server_state;
+          this.driver_state = status.driver_state;
         }
       });
   }

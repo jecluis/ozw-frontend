@@ -80,9 +80,7 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
   // fencing to prevent hammering the server, but we still want to
   // allow the initial state to be attempted to be loaded regardless.
   private load_nodes_fenced() {
-    if (this.network.is_started() ||
-        this.network.is_awake() ||
-        this.network.is_ready()) {
+    if (this.network.isReady() || this.network.isStarted()) {
       this.load_nodes();
     } else {
       this.dataSource.clearNodes();

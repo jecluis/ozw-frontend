@@ -19,7 +19,7 @@ export class ControllerOperationsComponent implements OnInit {
 
 
   can_issue_operations(): boolean {
-    return this.controller.is_available();
+    return this.controller.isAvailable();
   }
 
   private _show_unable_to_issue_snack() {

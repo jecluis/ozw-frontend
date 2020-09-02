@@ -12,8 +12,8 @@ export class ControllerService {
     private http: HttpClient
   ) { }
 
-  is_available(): boolean {
-    return this.network.is_awake() || this.network.is_ready();
+  isAvailable(): boolean {
+    return this.network.isAvailable();
   }
 
 
