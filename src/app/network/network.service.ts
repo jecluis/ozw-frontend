@@ -195,15 +195,16 @@ export class NetworkService {
 
 
 	isAvailable() {
-		return (this.driver_state.is_connected);
+		return (!!this.driver_state && this.driver_state.is_connected);
 	}
 
 	isReady() {
-		return (this.driver_state.is_ready);
+		return (!!this.driver_state && this.driver_state.is_ready);
 	}
 
 	isStarted() {
-		return (this.driver_state.is_ready &&
+		return (!!this.driver_state &&
+			    this.driver_state.is_ready &&
 		        this.driver_state.is_scan_completed);
 	}
 
