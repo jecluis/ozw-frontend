@@ -26,13 +26,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ControllerOperationsComponent } from './details-drawer/operations/controller-operations/controller-operations.component';
 import { NodeOperationsComponent } from './details-drawer/operations/node-operations/node-operations.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SettingsDashboardComponent } from './settings/settings-dashboard/settings-dashboard.component';
+import { SettingsDashboardComponent } from './settings/dashboard/dashboard.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SettingsNetworkComponent } from './settings/network/network.component';
+import { SettingsOperationsComponent } from './settings/operations/operations.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -46,6 +50,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ControllerOperationsComponent,
     NodeOperationsComponent,
     SettingsDashboardComponent,
+    SettingsNetworkComponent,
+    SettingsOperationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +77,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatRadioModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    MatSnackBarModule
+	MatSnackBarModule,
+	MatProgressSpinnerModule,
+	MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

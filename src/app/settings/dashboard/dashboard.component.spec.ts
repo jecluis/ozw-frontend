@@ -7,7 +7,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { SettingsDashboardComponent } from './settings-dashboard.component';
+import { SettingsDashboardComponent } from './dashboard.component';
 
 describe('SettingsDashboardComponent', () => {
   let component: SettingsDashboardComponent;
