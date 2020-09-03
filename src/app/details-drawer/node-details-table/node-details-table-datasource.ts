@@ -2,22 +2,10 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, catchError, finalize } from 'rxjs/operators';
-import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
+import { Observable, merge, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { NetworkValue } from '../../types/Value';
 
-
-export interface NodeDetailValue {
-  label: string;
-  units: string;
-  data: string;
-}
-
-export interface NodeDetailsByScope {
-
-  scope: string;
-  scope_id: number;
-  values: NodeDetailValue[];
-}
 
 
 /**
@@ -26,14 +14,14 @@ export interface NodeDetailsByScope {
  * (including sorting, pagination, and filtering).
  */
 export class NodeDetailsTableDataSource
-        extends DataSource<NodeDetailValue> {
+        extends DataSource<NetworkValue> {
 
 	paginator: MatPaginator;
 	sort: MatSort;
 
-	node_details: NodeDetailValue[] = [];
+	node_details: NetworkValue[] = [];
 	private node_details_subject =
-		new BehaviorSubject<NodeDetailValue[]>([]);
+		new BehaviorSubject<NetworkValue[]>([]);
 
 	constructor(private http: HttpClient) {
 		super();
@@ -44,7 +32,7 @@ export class NodeDetailsTableDataSource
 	 * the returned stream emits new items.
 	 * @returns A stream of the items to be rendered.
 	 */
-	connect(): Observable<NodeDetailValue[]> {
+	connect(): Observable<NetworkValue[]> {
 		// Combine everything that affects the rendered data into one update
 		// stream for the data-table to consume.
 		const dataMutations = [
@@ -70,7 +58,7 @@ export class NodeDetailsTableDataSource
 	 * this would be replaced by requesting the appropriate data from the
 	 * server.
 	 */
-	private getPagedData(data: NodeDetailValue[]) {
+	private getPagedData(data: NetworkValue[]) {
 		const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
 		return data.splice(startIndex, this.paginator.pageSize);
 	}
@@ -80,7 +68,7 @@ export class NodeDetailsTableDataSource
 	 * this would be replaced by requesting the appropriate data from the
 	 * server.
 	 */
-	private getSortedData(data: NodeDetailValue[]) {
+	private getSortedData(data: NetworkValue[]) {
 		if (!this.sort.active || this.sort.direction === '') {
 			return data;
 		}
@@ -88,8 +76,10 @@ export class NodeDetailsTableDataSource
 		return data.sort((a, b) => {
 			const isAsc = this.sort.direction === 'asc';
 			switch (this.sort.active) {
-				case 'label': return compare(a.label, b.label, isAsc);
-				case 'units': return compare(a.units, b.units, isAsc);
+				case 'label':
+					return compare(a.value.label, b.value.label, isAsc);
+				case 'units':
+					return compare(a.value.units, b.value.units, isAsc);
 				default: return 0;
 			}
 		});
@@ -104,7 +94,7 @@ export class NodeDetailsTableDataSource
 
 		let endpoint = '/api/nodes/'+node_id+'/values/genre/'+scope;
 		let node_details =
-		this.http.get<NodeDetailValue[]>(endpoint)
+		this.http.get<NetworkValue[]>(endpoint)
 		.pipe(
 			catchError( () => merge([]) ),
 			finalize( () => console.log("got node scope"))

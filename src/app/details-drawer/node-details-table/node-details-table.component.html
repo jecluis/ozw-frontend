@@ -3,19 +3,19 @@
     <!-- Name Column -->
     <ng-container matColumnDef="label">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Label</th>
-      <td mat-cell *matCellDef="let row">{{row.label}}</td>
+      <td mat-cell *matCellDef="let row">{{row.value.label}}</td>
     </ng-container>
     
     <!-- Value Column -->
     <ng-container matColumnDef="data">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Value</th>
-      <td mat-cell *matCellDef="let row">{{row.data}}</td>
+      <td mat-cell *matCellDef="let row">{{row.value.value}}</td>
     </ng-container>
 
     <!-- units Column -->
     <ng-container matColumnDef="units">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Units</th>
-      <td mat-cell *matCellDef="let row">{{row.units}}</td>
+      <td mat-cell *matCellDef="let row">{{row.value.units}}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
