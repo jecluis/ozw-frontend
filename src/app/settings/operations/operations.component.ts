@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NetworkService } from '../../network/network.service';
+import { CommandStatus, CommandEnumToString, CommandState, CommandGetStateString, CommandEnum } from '../../types/Command';
 
 @Component({
   selector: 'app-settings-operations',
@@ -33,6 +35,29 @@ export class SettingsOperationsComponent implements OnInit {
 	private _status: CommandStatus;
 	private _progress_str: string = ""; // read by the view
 	private _progress_percent: number = 0;
+
+	private _operations = [
+		{
+			name: "add node", icon: "add",
+			action: this.runAddNode.bind(this),
+			check: this.isRunningAddNode.bind(this)
+		},
+		{
+			name: "remove node", icon: "remove",
+			action: this.runRemoveNode.bind(this),
+			check: this.isRunningRemoveNode.bind(this)
+		},
+		{
+			name: "heal network", icon: "healing",
+			action: this.runHealNetwork.bind(this),
+			check: this.isRunningHealNetwork.bind(this)
+		},
+		{
+			name: "refresh information", icon: "refresh",
+			action: this.runRefreshInfo.bind(this),
+			check: this.isRunningRefreshInfo.bind(this)
+		}
+	]
 
 	private _setRunningOperation(): void {
 		console.log("settings > operations > is running operation");
@@ -93,8 +118,12 @@ export class SettingsOperationsComponent implements OnInit {
 		return this._is_running_operation;
 	}
 
+	cancelOperation() {
+		console.log("cancel operation");
+	}
 
 	runAddNode(): void {
+		console.log("run add node");
 		this._setRunningOperation();
 	}
 
@@ -106,11 +135,29 @@ export class SettingsOperationsComponent implements OnInit {
 		this._setRunningOperation();
 	}
 
-	runUpdateNeighbors(): void {
+	runRefreshInfo(): void {
 		this._setRunningOperation();
 	}
 
-	runRefreshInfo(): void {
-		this._setRunningOperation();
+	isRunningOperationType(op: CommandEnum) {
+		return (this._is_running_operation &&
+			this._status && this._status.current_command &&
+		    this._status.current_command.command == op);
+	}
+
+	isRunningAddNode(): boolean {
+		return this.isRunningOperationType(CommandEnum.AddDevice);
+	}
+
+	isRunningRemoveNode(): boolean {
+		return this.isRunningOperationType(CommandEnum.RemoveDevice);
+	}
+
+	isRunningHealNetwork(): boolean {
+		return this.isRunningOperationType(CommandEnum.RequestNodeNeighborUpdate);
+	}
+
+	isRunningRefreshInfo(): boolean {
+		return false;
 	}
 }

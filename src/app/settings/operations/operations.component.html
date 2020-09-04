@@ -9,69 +9,27 @@
       fxLayout="row"
       fxLayoutAlign="space-between center">
 
-    <div fxLayout="column">
-      <button *ngIf="!isRunningOperation()"
-              mat-stroked-button color="primary"
-              matTooltip="Add Node"
-              (click)="runAddNode()">
-        <mat-icon>add</mat-icon>
-      </button>
-      <button *ngIf="isRunningOperation()"
-              mat-stroked-button color="disabled"
-              matTooltip="Add Node">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-
-    <div fxLayout="column">
-      <button *ngIf="!isRunningOperation()"
-              mat-raised-button color="warn"
-              matTooltip="Remove Node"
-              (click)="runRemoveNode()">
-        <mat-icon>remove_circle</mat-icon>
-      </button>
-      <button *ngIf="isRunningOperation()"
-              mat-stroked-button color="disabled"
-              matTooltip="Remove Node">
-        <mat-icon>remove</mat-icon>
-      </button>
-    </div>
-
-    <button *ngIf="!isRunningOperation()"
-              mat-stroked-button color="primary"
-              matTooltip="Heal Network"
-              (click)="runHealNetwork()">
-        <mat-icon>healing</mat-icon>
-      </button>
-      <button *ngIf="isRunningOperation()"
-              mat-stroked-button color="disabled"
-              matTooltip="Heal Network">
-        <mat-icon>healing</mat-icon>
-      </button>
-
-    <button *ngIf="!isRunningOperation()"
-              mat-stroked-button color="primary"
-              matTooltip="Update Neighbors"
-              (click)="runUpdateNeighbors()">
-        <mat-icon>sync_alt</mat-icon>
-      </button>
-      <button *ngIf="isRunningOperation()"
-              mat-stroked-button color="disabled"
-              matTooltip="Update Neighbors">
-        <mat-icon>sync_alt</mat-icon>
-      </button>
-
-    <button *ngIf="!isRunningOperation()"
-              mat-stroked-button color="primary"
-              matTooltip="Refresh Informations"
-              (click)="runRefreshInfo()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-      <button *ngIf="isRunningOperation()"
-              mat-stroked-button color="disabled"
-              matTooltip="Refresh Informations">
-        <mat-icon>refresh</mat-icon>
-      </button>
+    <ng-container *ngFor="let op of _operations">
+      <div fxLayout="column">
+        <button *ngIf="!isRunningOperation()"
+                mat-stroked-button color="primary"
+                [matTooltip]="op.name.toUpperCase()"
+                (click)="op.action()">
+          <mat-icon>{{op.icon}}</mat-icon>
+        </button>
+        <button *ngIf="isRunningOperation() && !op.check()"
+                mat-stroked-button color="disabled"
+                [matTooltip]="op.name.toUpperCase()">
+          <mat-icon>{{op.icon}}</mat-icon>
+        </button>
+        <button *ngIf="isRunningOperation() && op.check()"
+                mat-raised-button color="warn"
+                matTooltip="Cancel operation"
+                (click)="cancelOperation()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </ng-container>
 
   </mat-card-content>
 
