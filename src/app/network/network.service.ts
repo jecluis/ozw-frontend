@@ -7,9 +7,10 @@
  * European Comission.
  */
 import { Injectable } from '@angular/core';
-import { interval, of, BehaviorSubject } from 'rxjs';
+import { interval, of, BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+import { CommandStatus } from '../types/Command';
 
 
 export enum DriverState {
@@ -86,16 +87,26 @@ export class NetworkService {
 	driver_state: DriverStateItem;
 	network_state: NetworkStateItem;
 
+	_command_status: CommandStatus;
+
 	private state_subject_observer =
 		new BehaviorSubject<NetworkState>(undefined);
 	private simplestatus_subject_observer =
 		new BehaviorSubject<SimpleStatusItem>(undefined);
 
+	private _command_status_observer =
+		new BehaviorSubject<CommandStatus>(undefined);
+	private _command_status_interval: Observable<number> = interval(10000);
+
 	constructor(private http: HttpClient) {
 		interval(30000).subscribe(
 			(val) => { this.obtainNetworkState(); }
-		)
-		this.obtainNetworkState()
+		);
+		this.obtainNetworkState(); // immediately get network state once.
+		this._command_status_interval.subscribe((val) => {
+			this._obtainCommandState();
+		});
+		this._obtainCommandState();
 	}
 
 	private obtainNetworkState() {
@@ -120,6 +131,19 @@ export class NetworkService {
 			console.log("unable to obtain network status")
 			this.driver_state_str = DriverState.UNKNOWN;
 			this.network_state_str = NetworkState.UNKNOWN;
+		});
+	}
+
+	private _obtainCommandState() {
+		console.log("obtaining command state");
+		this.http.get<CommandStatus>('/api/command/status')
+		.pipe( catchError( (err) => of(undefined)))
+		.subscribe( (status: CommandStatus) => {
+			console.log("netsvc > command status: ", status);
+			if (status) {
+				this._command_status = status;
+				this._command_status_observer.next(status);
+			}
 		});
 	}
 
@@ -199,6 +223,14 @@ export class NetworkService {
 
 	get_simplestatus_observer() : BehaviorSubject<SimpleStatusItem> {
 		return this.simplestatus_subject_observer;
+	}
+
+	getCommandStatusObserver(): BehaviorSubject<CommandStatus> {
+		return this._command_status_observer;
+	}
+
+	getCommandStatus(): CommandStatus {
+		return this._command_status;
 	}
 
 

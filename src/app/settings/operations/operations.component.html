@@ -77,11 +77,12 @@
 
   <div style="padding-top: 0px; padding-right: 30px; padding-left: 30px"
        fxLayout="column"
-       fxLayoutAlign="center center">
+       fxLayoutAlign="center center"
+       *ngIf="isRunningOperation()">
     <div style="padding-bottom: 10px">
-      > Command Running
+      > {{_progress_str}}
     </div>
-    <mat-progress-bar mode="buffer" value=""></mat-progress-bar>
+    <mat-progress-bar mode="buffer" value="{{_progress_percent}}"></mat-progress-bar>
   </div>
 
 </mat-card>
