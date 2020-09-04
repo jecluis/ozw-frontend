@@ -98,30 +98,30 @@ export class NetworkService {
 		this.obtainNetworkState()
 	}
 
-  private obtainNetworkState() {
-	console.log("obtaining network state");
-	this.http.get<FullStatusItem>('/api/network/status')
-	  .pipe(
-		catchError( (err) => of(undefined))
-	  )
-	  .subscribe( (status: FullStatusItem) => {
-		console.log("got network status: ", status);
-		
-		this.setState(status);
-		
-		this.state_subject_observer.next(this.get_network_state());
-		this.simplestatus_subject_observer.next({
-		  driver_state: this.get_server_state(),
-		  network_state: this.get_network_state(),
-		  device: status.driver.device,
+	private obtainNetworkState() {
+		console.log("obtaining network state");
+		this.http.get<FullStatusItem>('/api/network/status')
+		.pipe(
+			catchError( (err) => of(undefined))
+		)
+		.subscribe( (status: FullStatusItem) => {
+			console.log("got network status: ", status);
+			
+			this.setState(status);
+			
+			this.state_subject_observer.next(this.get_network_state());
+			this.simplestatus_subject_observer.next({
+				driver_state: this.get_server_state(),
+				network_state: this.get_network_state(),
+				device: status.driver.device,
+			});
+		},
+		err => {
+			console.log("unable to obtain network status")
+			this.driver_state_str = DriverState.UNKNOWN;
+			this.network_state_str = NetworkState.UNKNOWN;
 		});
-	  },
-	  err => {
-		console.log("unable to obtain network status")
-		this.driver_state_str = DriverState.UNKNOWN;
-		this.network_state_str = NetworkState.UNKNOWN;
-	  });
-  }
+	}
 
 
 	/**
@@ -224,4 +224,7 @@ export class NetworkService {
 	stopNetwork() {
 		return this.http.post("/api/network/stop", true);
 	}
+
+
+
 }
