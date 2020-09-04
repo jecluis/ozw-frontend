@@ -217,11 +217,11 @@ export class NetworkService {
 	}
 
 
-	start_network() {
+	startNetwork() {
 		return this.http.post("/api/network/start", true);
 	}
 
-	stop_network() {
+	stopNetwork() {
 		return this.http.post("/api/network/stop", true);
 	}
 }

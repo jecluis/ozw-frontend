@@ -32,7 +32,7 @@ export class SettingsNetworkComponent implements OnInit {
 
 	startNetwork() {
 		console.info("start network")
-		this.network.start_network()
+		this.network.startNetwork()
 		.subscribe(
 			res => {
 				console.log("started network");
@@ -54,7 +54,7 @@ export class SettingsNetworkComponent implements OnInit {
 
 	stopNetwork() {
 		console.info("stop network")
-		this.network.stop_network()
+		this.network.stopNetwork()
 		.subscribe(
 			res => {
 				console.log("stopped network");
