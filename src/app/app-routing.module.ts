@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { NodesComponent } from './nodes/nodes.component';
+import { NodesComponent } from './nodes/main-view/nodes.component';
 import { SettingsDashboardComponent } from './settings/dashboard/dashboard.component';
 
 

@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { NodesTableComponent } from '../nodes-table/nodes-table.component';
-import { NodesTableItem } from '../nodes-table/nodes-table-datasource';
-import { NetworkService } from '../network/network.service';
+import { NodesTableComponent } from '../table/nodes-table.component';
+import { NetworkNode } from '../table/nodes-table-datasource';
+import { NetworkService } from '../../network/network.service';
 
 @Component({
   selector: 'app-nodes',
@@ -34,7 +34,7 @@ export class NodesComponent implements OnInit {
     this.show_details_node_id = -1;
   }
 
-  open_node_details(event: NodesTableItem) {
+  open_node_details(event: NetworkNode) {
     console.log("open node details drawer > id = " + event.id)
     console.log("  state > open: ", this.is_drawer_open,
                 ", details node: ", this.show_details_node_id);

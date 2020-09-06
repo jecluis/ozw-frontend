@@ -2,11 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild, Output, EventEmitter } fro
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { NodesTableDataSource, NodesTableItem } from './nodes-table-datasource';
+import { NodesTableDataSource, NetworkNode } from './nodes-table-datasource';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, interval } from 'rxjs';
-import { NetworkService } from '../network/network.service';
+import { NetworkService } from '../../network/network.service';
 
 @Component({
   selector: 'app-nodes-table',
@@ -24,7 +24,7 @@ import { NetworkService } from '../network/network.service';
 export class NodesTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<NodesTableItem>;
+  @ViewChild(MatTable) table: MatTable<NetworkNode>;
   dataSource: NodesTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
@@ -32,9 +32,9 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
       'id', 'product', 'type', 'state', 'capabilities',
       'lastseen', 'metering', 'insights'
   ];
-  expandedNode: NodesTableItem | null;
+  expandedNode: NetworkNode | null;
 
-  @Output() selected_node = new EventEmitter<NodesTableItem>();
+  @Output() selected_node = new EventEmitter<NetworkNode>();
 
   private data_update_subscription: Subscription;
   current_network_state: string = 'unknown';
@@ -68,7 +68,7 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
   details_n = 0;
   show_details = false;
-  toggle_details(node: NodesTableItem) {
+  toggle_details(node: NetworkNode) {
     console.log("toggle details for node: ", node);
     this.selected_node.next(node);
   }
