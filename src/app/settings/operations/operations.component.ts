@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NetworkService } from '../../network/network.service';
 import { CommandStatus, CommandEnumToString, CommandState, CommandGetStateString, CommandEnum } from '../../types/Command';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-settings-operations',
@@ -9,7 +11,11 @@ import { CommandStatus, CommandEnumToString, CommandState, CommandGetStateString
 })
 export class SettingsOperationsComponent implements OnInit {
 
-	constructor(private networksvc: NetworkService) { }
+	constructor(
+		private networksvc: NetworkService,
+		private http: HttpClient,
+		private snackbar: MatSnackBar
+	) { }
 
 	ngOnInit(): void {
 		this._status = this.networksvc.getCommandStatus();
@@ -27,14 +33,16 @@ export class SettingsOperationsComponent implements OnInit {
 			this._status.is_running_command = false;
 			this._updateStatusProgress(this._status.current_command);
 		} else {
-			this._is_running_operation = this._status.is_running_command;
+			this._is_running_command = this._status.is_running_command;
 		}
 	}
 
-	private _is_running_operation: boolean = false;
+	private _is_running_command: boolean = false;
 	private _status: CommandStatus;
 	private _progress_str: string = ""; // read by the view
 	private _progress_percent: number = 0;
+	// this just allows us to block buttons until an op starts
+	private _triggered_operation: boolean = false;
 
 	private _operations = [
 		{
@@ -59,22 +67,18 @@ export class SettingsOperationsComponent implements OnInit {
 		}
 	]
 
-	private _setRunningOperation(): void {
-		console.log("settings > operations > is running operation");
-		this._is_running_operation = true;
-	}
 
 	private _handleStatusUpdate(status: CommandStatus) {
 		if (!status) { return; }
 
-		if (status.is_running_command && !this._is_running_operation) {
+		if (status.is_running_command && !this._is_running_command) {
 			console.log("we are now running a command.");
-			this._is_running_operation = true;
-		} else if (!status.is_running_command && this._is_running_operation) {
+			this._is_running_command = true;
+		} else if (!status.is_running_command && this._is_running_command) {
 			console.log("no longer running a command");
 			new Promise((resolve, reject) => {
 				setTimeout( (resolve) => {
-					this._is_running_operation = false;
+					this._is_running_command = false;
 					this._progress_percent = 0;
 					this._progress_str = "";
 				}, 5000);
@@ -114,33 +118,63 @@ export class SettingsOperationsComponent implements OnInit {
 		this._updateStatusProgress(status.last_command);
 	}
 
+
+	private _setTriggerOperation(): void {
+		console.log("settings > operations > is running operation");
+		this._triggered_operation = true;
+		new Promise( (resolve, reject) => {
+			setTimeout( (resolve) => {
+				this._triggered_operation = false;
+			}, 10000);
+		});
+		this.snackbar.open(
+			"triggering operation; please wait.",
+			"OK",
+			{ duration: 5000 }
+		);
+	}
+
 	isRunningOperation(): boolean {
-		return this._is_running_operation;
+		return this._is_running_command;
+	}
+
+	isTriggeredOperation(): boolean {
+		return this._is_running_command || this._triggered_operation;
 	}
 
 	cancelOperation() {
 		console.log("cancel operation");
+		this.http.put('/api/command/cancel', true)
+		.subscribe( (res) => {
+			console.log("cancelled operation:", res)
+		});
 	}
 
 	runAddNode(): void {
 		console.log("run add node");
-		this._setRunningOperation();
+		this._setTriggerOperation();
+		this.http.put('/api/command/node/add', true)
+		.subscribe( (res) => console.log("adding node"));
 	}
 
 	runRemoveNode(): void {
-		this._setRunningOperation();
+		this._setTriggerOperation();
+		this.http.put('/api/command/node/remove', true)
+		.subscribe( (res) => console.log("removing node"));
 	}
 
 	runHealNetwork(): void {
-		this._setRunningOperation();
+		this._setTriggerOperation();
+		this.http.put('/api/command/network/heal', true)
+		.subscribe( (res) => console.log("healing network"));
 	}
 
 	runRefreshInfo(): void {
-		this._setRunningOperation();
+		this._setTriggerOperation();
 	}
 
 	isRunningOperationType(op: CommandEnum) {
-		return (this._is_running_operation &&
+		return (this._is_running_command &&
 			this._status && this._status.current_command &&
 		    this._status.current_command.command == op);
 	}

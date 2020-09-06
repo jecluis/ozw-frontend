@@ -11,18 +11,18 @@
 
     <ng-container *ngFor="let op of _operations">
       <div fxLayout="column">
-        <button *ngIf="!isRunningOperation()"
+        <button *ngIf="!isTriggeredOperation()"
                 mat-stroked-button color="primary"
                 [matTooltip]="op.name.toUpperCase()"
                 (click)="op.action()">
           <mat-icon>{{op.icon}}</mat-icon>
         </button>
-        <button *ngIf="isRunningOperation() && !op.check()"
+        <button *ngIf="isTriggeredOperation() && !op.check()"
                 mat-stroked-button color="disabled"
                 [matTooltip]="op.name.toUpperCase()">
           <mat-icon>{{op.icon}}</mat-icon>
         </button>
-        <button *ngIf="isRunningOperation() && op.check()"
+        <button *ngIf="isTriggeredOperation() && op.check()"
                 mat-raised-button color="warn"
                 matTooltip="Cancel operation"
                 (click)="cancelOperation()">
@@ -38,7 +38,7 @@
        fxLayoutAlign="center center"
        *ngIf="isRunningOperation()">
     <div style="padding-bottom: 10px">
-      > {{_progress_str}}
+      {{_progress_str}}
     </div>
     <mat-progress-bar mode="buffer" value="{{_progress_percent}}"></mat-progress-bar>
   </div>
