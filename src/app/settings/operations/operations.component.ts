@@ -44,7 +44,7 @@ export class SettingsOperationsComponent implements OnInit {
 	// this just allows us to block buttons until an op starts
 	private _triggered_operation: boolean = false;
 
-	private _operations = [
+	_operations = [
 		{
 			name: "add node", icon: "add",
 			action: this.runAddNode.bind(this),
