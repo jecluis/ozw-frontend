@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { Observable, merge, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { NetworkValue } from '../../types/Value';
+import { NetworkValue } from '../../../types/Value';
 
 
 

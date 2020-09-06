@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { NodeDetailsTableDataSource, } from './node-details-table-datasource';
 import { HttpClient } from '@angular/common/http';
-import { NetworkValue } from '../../types/Value';
+import { NetworkValue } from '../../../types/Value';
 
 @Component({
   selector: 'app-node-details-table',
