@@ -3,13 +3,43 @@
     <!-- Name Column -->
     <ng-container matColumnDef="label">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Label</th>
-      <td mat-cell *matCellDef="let row">{{row.value.label}}</td>
+      <td mat-cell *matCellDef="let row">
+        <div fxLayout="column" fxLayoutAlign="space-between start">
+          <span>{{row.value.label}}</span>
+          <span style="font-size: 10px; color:lightslategray">id: {{row.value.value_id}}</span>
+        </div>
+      </td>
     </ng-container>
     
     <!-- Value Column -->
     <ng-container matColumnDef="data">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Value</th>
-      <td mat-cell *matCellDef="let row">{{row.value.value}}</td>
+      <td mat-cell *matCellDef="let row">
+        <div *ngIf="row.value.read_only; else readWrite">
+          <span>{{row.value.value}}</span>
+        </div>
+
+        <ng-template #readWrite  [ngSwitch]="row.value.type">
+          <div *ngSwitchDefault
+            fxLayout="column" fxLayoutAlign="space-between start">
+            <span>{{row.value.value}}</span>
+            <span style="font-size: 10px; color: lightslategray">{{row.value.type}}</span>
+          </div>
+
+          <ng-container *ngSwitchCase="'list'">
+            <mat-form-field appearance="fill"
+                  placeholder="{{row.value.value}}">                
+                  <mat-select [(value)]="row.value.value">
+                <mat-option *ngFor="let v of row.value.values" [value]="v" >{{v}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'bool'">
+            <mat-slide-toggle [checked]="row.value.value"></mat-slide-toggle>
+          </ng-container>
+        </ng-template>
+      </td>
     </ng-container>
 
     <!-- units Column -->

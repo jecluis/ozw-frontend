@@ -37,6 +37,7 @@ import { SettingsNetworkComponent } from './settings/network/network.component';
 import { SettingsOperationsComponent } from './settings/operations/operations.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 	MatSnackBarModule,
 	MatProgressSpinnerModule,
 	MatProgressBarModule,
+	MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
