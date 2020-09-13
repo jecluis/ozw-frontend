@@ -86,4 +86,64 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
       this.dataSource.clearNodes();
     }
   }
+
+  public getLastSeenStr(node: NetworkNode): string {
+	  let date = new Date(node.last_seen);
+	  let now = new Date().getTime();
+	  let diff = Math.floor((now - date.getTime())/1000);
+
+	  let month_secs = 2.628e+6; // months in seconds
+	  let week_secs = 604800; // weeks in seconds
+	  let day_secs = 86400; // 24h in seconds
+	  let hour_secs = 3600;
+	  let min_secs = 60;
+
+	  let months = Math.floor(diff/month_secs);
+	  diff -= months*month_secs;
+
+	  let weeks = Math.floor(diff/week_secs);
+	  diff -= weeks*week_secs;
+
+	  let days = Math.floor(diff/day_secs);
+	  diff -= days*day_secs;
+
+	  let hours = Math.floor(diff/hour_secs);
+	  diff -= hours*hour_secs;
+
+	  let mins = Math.floor(diff/min_secs);
+	  diff -= mins*min_secs;
+
+
+	  let time_lst = [];
+	  if (months > 0) {
+		  time_lst.push(`${months}mo`);
+	  }
+
+	  if (weeks > 0) {
+		  time_lst.push(`${weeks}wk`);
+	  }
+
+	  if (days > 0) {
+		  time_lst.push(`${days}d`);
+	  }
+
+	  if (hours > 0) {
+		  time_lst.push(`${hours}h`);
+	  }
+
+	  if (mins > 0) {
+		  time_lst.push(`${mins}m`);
+	  }
+
+	  if (time_lst.length == 0 && diff > 0) {
+		  time_lst.push("about a minute ago");
+	  }
+
+	  let str: string = `${time_lst.join(', ')} ago`;
+	  return str;
+  }
+
+  public getTypeOf(val) {
+	  return typeof val;
+  }
 }

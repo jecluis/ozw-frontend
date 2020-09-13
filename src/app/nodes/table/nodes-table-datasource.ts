@@ -58,7 +58,7 @@ export interface NetworkNode {
 	properties: NetworkNodeProperties;
 	type: NetworkNodeType;
 	state: NetworkNodeState;
-	last_seen: Date;
+	last_seen: string;
 }
 
 /**

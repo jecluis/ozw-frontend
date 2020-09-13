@@ -82,7 +82,7 @@
   </ng-container>
   <ng-container matColumnDef="lastseen">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Seen</th>
-    <td mat-cell *matCellDef="let row">{{row.last_seen}}</td>
+    <td mat-cell *matCellDef="let row">{{getLastSeenStr(row)}}</td>
   </ng-container>
   <ng-container matColumnDef="metering">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Metering?</th>
