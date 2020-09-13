@@ -1,27 +1,26 @@
-# OzwDashboard
+wipwd's zwave management dashboard
+----------------------------------
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.1.
+Note before: this project was ripped-off from ozw-thingy.git's rest-api
+effort. That was the product of our initial ventures with openzwave as a
+backend for a management dashboard. We have chosen to make this a standalone
+project because we've fiddled with multiple backend solutions lately, and the
+only thing that remained constant was the frontend.
 
-## Development server
+That said, expect weird code indentation, poorly written code, code that does
+not yet work as well as it should. This is still under heavy (albeit
+occasional) development.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+We do not aim at making this all the rage. There are other projects much
+farther along than this one, and with proper communities to back them up. Note
+that this project results from 1) wanting to play with the openzwave
+libraries; 2) wanting a simple management dashboard, without needing
+integration with home assistant and the likes; and 3) built with typescript.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+LICENSE
+-------
 
-## Build
+This work is licensed under the European Union Public Library v1.2. A copy of
+the license is provided in the root of this repository; see LICENSE.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
