@@ -6,7 +6,7 @@ import { NodesTableDataSource, NetworkNode } from './nodes-table-datasource';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, interval } from 'rxjs';
-import { NetworkService } from '../../network/network.service';
+import { NetworkService } from '../../network/service/network.service';
 
 @Component({
   selector: 'app-nodes-table',

@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { interval, of, BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { CommandStatus } from '../types/Command';
+import { CommandStatus } from '../../types/Command';
 
 
 export enum DriverState {

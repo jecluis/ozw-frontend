@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { NodesTableComponent } from '../table/nodes-table.component';
 import { NetworkNode } from '../table/nodes-table-datasource';
-import { NetworkService } from '../../network/network.service';
+import { NetworkService } from '../../network/service/network.service';
 
 @Component({
   selector: 'app-nodes',

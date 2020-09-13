@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NetworkService } from '../../network/network.service';
+import { NetworkService } from '../../network/service/network.service';
 import { CommandStatus, CommandEnumToString, CommandState, CommandGetStateString, CommandEnum } from '../../types/Command';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';

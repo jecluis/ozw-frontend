@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ControllerService } from '../../../../network/controller.service';
+import { ControllerService } from '../../../../network/service/controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
