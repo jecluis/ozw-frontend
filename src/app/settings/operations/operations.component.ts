@@ -103,7 +103,8 @@ export class SettingsOperationsComponent implements OnInit {
 
 		if (!!state.time_started) {
 			let now: number = new Date().getTime();
-			let diff = now - state.time_started.getTime();
+			// let diff = now - state.time_started;
+			let diff = 0;
 			let secs = Math.floor(diff/1000);
 			progress_str += " - running for " + secs + " seconds";
 		}
