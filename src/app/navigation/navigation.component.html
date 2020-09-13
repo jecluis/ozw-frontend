@@ -40,6 +40,18 @@
             style="font-size: 20px;">settings</span>
         </a>
       </mat-list-item>
+      <mat-list-item>
+        <a mat-list-item routerLink="/network-view"
+            routerLinkActive="active"
+            aria-label="network">
+            <mat-icon
+              matTooltip="network"
+              style="padding: 3px;"
+            >share</mat-icon>
+            <span *ngIf="isExpanded"
+              style="font-size: 20px;">network</span>
+        </a>
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

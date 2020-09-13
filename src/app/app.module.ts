@@ -38,6 +38,7 @@ import { SettingsOperationsComponent } from './settings/operations/operations.co
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { NetworkViewComponent } from './network/view/network-view.component';
 
 
@@ -54,6 +55,7 @@ import { NetworkViewComponent } from './network/view/network-view.component';
     SettingsDashboardComponent,
     SettingsNetworkComponent,
     SettingsOperationsComponent,
+    NetworkViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +85,7 @@ import { NetworkViewComponent } from './network/view/network-view.component';
 	MatProgressSpinnerModule,
 	MatProgressBarModule,
 	MatSlideToggleModule,
+	NgxGraphModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

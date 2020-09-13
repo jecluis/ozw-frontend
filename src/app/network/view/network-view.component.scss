@@ -1,0 +1,10 @@
+.container {
+	margin: 20px;
+}
+
+.card {
+	// position: absolute;
+	margin: 15px;
+	top: calc(1em + 15px);
+	height: calc(100vh - 64px - 20px - 16px - 32px - 15px*2 - 16px*3);
+}
