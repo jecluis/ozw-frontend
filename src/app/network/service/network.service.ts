@@ -217,7 +217,7 @@ export class NetworkService {
 		this.obtainNetworkState();
 	}
 
-	get_state_observer(): BehaviorSubject<NetworkState> {
+	getStateObserver(): BehaviorSubject<NetworkState> {
 		return this.state_subject_observer;
 	}
 

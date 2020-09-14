@@ -1,9 +1,17 @@
+/*
+ * Copyright (C) 2020  Joao Eduardo Luis <joao@wipwd.dev>
+ *
+ * This file is part of wip:wd's openzwave backend (ozw-backend).
+ * ozw-backend is free software: you can redistribute it and/or modify it under
+ * the terms of the EUROPEAN UNION PUBLIC LICENSE v1.2, as published by the
+ * European Comission.
+ */
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { Observable, merge, BehaviorSubject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { NodesService } from '../service/nodes-service.service';
 
 
 export interface NetworkNodeInfo {
@@ -67,14 +75,13 @@ export interface NetworkNode {
  * (including sorting, pagination, and filtering).
  */
 export class NodesTableDataSource extends DataSource<NetworkNode> {
-	paginator: MatPaginator;
-	sort: MatSort;
+	public _paginator: MatPaginator;
+	public _sort: MatSort;
+	private _nodes_data: NetworkNode[] = [];
+	private _nodes_subject = new BehaviorSubject<NetworkNode[]>([]);
 
-	nodes_data: NetworkNode[] = [];
-	private nodesSubject = new BehaviorSubject<NetworkNode[]>([]);
-
-	constructor(private http: HttpClient) {
-		super();
+	constructor(private _node_svc: NodesService) {
+		super();		
 	}
 
 	/**
@@ -85,14 +92,19 @@ export class NodesTableDataSource extends DataSource<NetworkNode> {
 	connect(): Observable<NetworkNode[]> {
 		// Combine everything that affects the rendered data into one update
 		// stream for the data-table to consume.
+		this._nodes_subject = this._node_svc.getNodes();
+		this._nodes_subject.subscribe( (nodes: NetworkNode[]) => {
+			this._nodes_data = nodes;
+		});
+
 		const dataMutations = [
-			this.nodesSubject,
-			this.paginator.page,
-			this.sort.sortChange
+			this._nodes_subject,
+			this._paginator.page,
+			this._sort.sortChange
 		];
 
 		return merge(...dataMutations).pipe(map(() => {
-			return this.getPagedData(this.getSortedData([...this.nodes_data]));
+			return this.getPagedData(this.getSortedData([...this._nodes_data]));
 		}));
 	}
 
@@ -109,8 +121,8 @@ export class NodesTableDataSource extends DataSource<NetworkNode> {
 	 * server.
 	 */
 	private getPagedData(data: NetworkNode[]) {
-		const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-		return data.splice(startIndex, this.paginator.pageSize);
+		const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+		return data.splice(startIndex, this._paginator.pageSize);
 	}
 
 	/**
@@ -119,13 +131,13 @@ export class NodesTableDataSource extends DataSource<NetworkNode> {
 	 * server.
 	 */
 	private getSortedData(data: NetworkNode[]) {
-		if (!this.sort.active || this.sort.direction === '') {
+		if (!this._sort.active || this._sort.direction === '') {
 			return data;
 		}
 
 		return data.sort((a, b) => {
-			const isAsc = this.sort.direction === 'asc';
-			switch (this.sort.active) {
+			const isAsc = this._sort.direction === 'asc';
+			switch (this._sort.active) {
 				case 'type': return compare(+a.info.type, +b.info.type, isAsc);
 				case 'product': 
 					return compare(a.info.product, b.info.product, isAsc);
@@ -136,35 +148,9 @@ export class NodesTableDataSource extends DataSource<NetworkNode> {
 			}
 		});
 	}
-
-
-	_getNodes() {
-
-		let nodes =
-		this.http.get<NetworkNode[]>('/api/nodes')
-		.pipe(
-			catchError( () => merge([]) ),
-			finalize( () => console.log("got nodes"))
-		)
-		.subscribe( nodes => {
-			this.nodes_data = nodes;
-			this.nodesSubject.next(this.nodes_data);
-			console.log("got nodes: ", nodes);
-		});
-	}
-
-	loadNodes() {
-		this._getNodes();
-	}
-
-	clearNodes() {
-		this.nodes_data = [];
-		this.nodesSubject.next([]);
-	}
-
 }
 
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
+/** Simple _sort comparator for example ID/Name columns (for client-side sorting). */
 function compare(a: string | number, b: string | number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
