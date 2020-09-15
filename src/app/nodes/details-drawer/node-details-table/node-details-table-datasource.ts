@@ -105,6 +105,10 @@ export class NodeDetailsTableDataSource
 			this.node_details_subject.next(this.node_details);
 		});
 	}
+
+	public getNodeDetailsSubject(): BehaviorSubject<NetworkValue[]> {
+		return this.node_details_subject;
+	}
 }
 
 /**

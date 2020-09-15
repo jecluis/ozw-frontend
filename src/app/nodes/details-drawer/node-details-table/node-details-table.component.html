@@ -17,6 +17,7 @@
       <td mat-cell *matCellDef="let row">
         <div *ngIf="row.value.read_only; else readWrite">
           <span>{{row.value.value}}</span>
+          <span style="margin-left: 10px">{{row.value.units}}</span>
         </div>
 
         <ng-template #readWrite  [ngSwitch]="row.value.type">
@@ -27,16 +28,60 @@
           </div>
 
           <ng-container *ngSwitchCase="'list'">
-            <mat-form-field appearance="fill"
-                  placeholder="{{row.value.value}}">                
-                  <mat-select [(value)]="row.value.value">
-                <mat-option *ngFor="let v of row.value.values" [value]="v" >{{v}}</mat-option>
-              </mat-select>
+            <form [formGroup]="form_groups[row.value.value_id]"
+                  (ngSubmit)="onSubmit(row.value.value_id)"
+                  (change)="onChange(row.value.value_id)">
+              <mat-form-field appearance="fill"
+                    placeholder="{{row.value.value}}">
+                    <mat-select formControlName="valuectrl">
+                  <mat-option *ngFor="let v of row.value.values" [value]="v" >
+                    {{v}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-stroked-button type="submit">submit</button>
+            </form>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'short'">
+            <mat-form-field appearance="fill">
+              <mat-label>{{row.value.type}}</mat-label>
+              <input matInput type="number"
+                  [placeholder]="row.value.value"
+                  [min]="row.value.min" [max]="row.value.max"
+                  [value]="row.value.value"/>
+              <span matSuffix>{{row.value.units}}</span>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'byte'">
+            <mat-form-field appearance="fill">
+              <mat-label>{{row.value.type}}</mat-label>
+              <input matInput type="number"
+                  [placeholder]="row.value.value"
+                  [min]="row.value.min" [max]="row.value.max"
+                  [value]="row.value.value"/>
+              <span matSuffix>{{row.value.units}}</span>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'int'">
+            <mat-form-field appearance="fill">
+              <mat-label>{{row.value.type}}</mat-label>
+              <input matInput type="number"
+                  [placeholder]="row.value.value"
+                  [min]="row.value.min" [max]="row.value.max"
+                  [value]="row.value.value"/>
+              <span matSuffix>{{row.value.units}}</span>
             </mat-form-field>
           </ng-container>
 
           <ng-container *ngSwitchCase="'bool'">
             <mat-slide-toggle [checked]="row.value.value"></mat-slide-toggle>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'button'">
+            <button mat-raised-button>{{row.value.label}}</button>
           </ng-container>
         </ng-template>
       </td>
