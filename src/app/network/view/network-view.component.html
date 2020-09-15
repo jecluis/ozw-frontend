@@ -5,30 +5,54 @@
 
 <mat-card class="card">
   <mat-card-content>
-    <div style="position: absolute; width: 100%; height: 100%">
+    <div style="position: absolute; width: 100%; height: calc(100% - 16px - 15px)">
       <ngx-graph
+        [showMiniMap]="true"
         layout="d3ForceDirected"
-        [links]="links"
+        [links]="edges"
         [nodes]="nodes"
-        [draggingEnabled]="false"
-        [enableZoom]="false"
-        [center$]="center$">
+        [draggingEnabled]="true"
+        [enableZoom]="true"
+        [center$]="center$"
+        [update$]="update$"
+        [zoomToFit$]="zoomToFit$"
+        >
 
         <ng-template #nodeTemplate let-node>
           <svg:g ngx-tooltip
             [tooltipPlacement]="'top'"
             [tooltipType]="'tooltip'"
             [tooltipTitle]="node.label" (click)="_onClick(node.label)">
-            <svg:rect
-              [attr.width]="node.dimension.width"
-              [attr.height]="node.dimension.height"
-              [attr.fill]="node.data.color"/>
-            <svg:text alignment-baseline="central"
-              [attr.x]="10" [attr.y]="node.dimension.height / 2">
-              {{node.label}}
-            </svg:text>
+            <ng-container *ngIf="!isController(node.id)">
+              <svg:rect *ngIf="!isController(node.id)"
+                [attr.width]="node.dimension.width"
+                [attr.height]="node.dimension.height"
+                [attr.fill]="node.data.color"/>
+
+              <svg:text alignment-baseline="central"
+                  [attr.x]="10" [attr.y]="node.dimension.height / 2">
+                {{node.label}}
+              </svg:text>
+            <!--
+            <svg:circle *ngIf="isController(node.id)"
+              [attr.cx]="node.dimension.width"
+              [attr.cy]="node.dimension.height / 2"
+              [attr.r]="8"
+              [attr.fill]="node.data.color"
+              [stroke-width]="1"/>
+            -->
+            </ng-container>
+            <ng-container *ngIf="isController(node.id)">
+              <image
+                  xlink:href="assets/icon-star_rate.svg"/>          
+              <svg:text alignment-baseline="central"
+                  [attr.x]="24" [attr.y]="node.dimension.height / 2">
+                {{node.label}}
+              </svg:text>
+            </ng-container>            
           </svg:g>
         </ng-template>
+
       </ngx-graph>
     </div>
   </mat-card-content>
