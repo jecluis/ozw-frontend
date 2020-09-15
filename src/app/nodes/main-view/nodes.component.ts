@@ -19,7 +19,7 @@ export class NodesComponent implements OnInit {
   network_state: string;
 
   ngOnInit() {
-    this.network.get_state_observer()
+    this.network.getStateObserver()
       .subscribe( state => {
         console.log("nodes > updating network state to ", state)
         this.network_state = state;
