@@ -6,14 +6,12 @@
  * the terms of the EUROPEAN UNION PUBLIC LICENSE v1.2, as published by the
  * European Comission.
  */
-import { AfterViewInit, Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { NodesTableDataSource, NetworkNode } from './nodes-table-datasource';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { HttpClient } from '@angular/common/http';
-import { Subscription, interval } from 'rxjs';
 import { NetworkService } from '../../network/service/network.service';
 import { NodesService } from '../service/nodes-service.service';
 
@@ -28,7 +26,8 @@ import { NodesService } from '../service/nodes-service.service';
 	  transition('expanded <=> collapsed',
 		  animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
 	])
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodesTableComponent implements AfterViewInit, OnInit {
 	@ViewChild(MatPaginator) paginator: MatPaginator;
@@ -45,7 +44,6 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
 	@Output() selected_node = new EventEmitter<NetworkNode>();
 
-	private data_update_subscription: Subscription;
 	current_network_state: string = 'unknown';
 
 	constructor(

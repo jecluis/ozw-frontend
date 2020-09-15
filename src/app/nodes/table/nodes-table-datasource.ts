@@ -77,7 +77,7 @@ export interface NetworkNode {
 export class NodesTableDataSource extends DataSource<NetworkNode> {
 	public _paginator: MatPaginator;
 	public _sort: MatSort;
-	private _nodes_data: NetworkNode[] = [];
+	public _nodes_data: NetworkNode[] = [];
 	private _nodes_subject = new BehaviorSubject<NetworkNode[]>([]);
 
 	constructor(private _node_svc: NodesService) {
