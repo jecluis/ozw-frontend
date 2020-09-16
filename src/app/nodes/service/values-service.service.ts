@@ -8,10 +8,12 @@
  */
 import { Injectable, WrappedValue } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, merge } from 'rxjs';
+import { BehaviorSubject, merge, interval } from 'rxjs';
 import { NetworkValue, Value } from 'src/app/types/Value';
 import { catchError } from 'rxjs/operators';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { NodesService } from './nodes-service.service';
+import { NetworkNode } from '../table/nodes-table-datasource';
 
 export interface ScopeValues {
 	scope: string;
@@ -49,9 +51,19 @@ export class ValuesService {
 
 	private _values_by_node: {[id: number]: NodeValueWrapper} = {};
 	private _fetch_interval: number = 20000;
+	private _all_fetch_interval: number = this._fetch_interval*3;
 
 
-	constructor(private _http: HttpClient) { }
+	constructor(
+		private _http: HttpClient,
+		private _nodes_svc: NodesService
+	) {
+		interval(this._all_fetch_interval).subscribe( () => {
+			this._fetchAllValues();
+		});
+		// run immediately
+		this._fetchAllValues();
+	}
 
 
 	private _shouldFetch(last_fetch: Date) {
@@ -61,7 +73,7 @@ export class ValuesService {
 
 	private _getOrCreateNode(nodeid: number): NodeValueWrapper {
 		if (!(nodeid in this._values_by_node)) {
-			console.debug(`creating node ${nodeid}`);
+			console.debug(`values-svc: creating node ${nodeid}`);
 			this._values_by_node[nodeid] = {
 				nodevalue: {
 					nodeid: nodeid,
@@ -118,6 +130,52 @@ export class ValuesService {
 			_node_wrapper.nodevalue.values[_valueid] = _value;
 		}
 		return _node_wrapper.nodevalue.values[_valueid];
+	}
+
+	private _updateAllValues(nodeid: number, values: NetworkValue[]): void {
+		console.debug(`values-svc: update values for node ${nodeid}`);
+
+		let _node_wrapper: NodeValueWrapper = this._getOrCreateNode(nodeid);
+		let _node_scopes: ScopeValueMap = {};
+
+		values.forEach( (value: NetworkValue) => {
+			let _scope_name: string = value.value.genre;
+			if (!(_scope_name in _node_scopes)) {
+				_node_scopes[_scope_name] = {
+					last_fetch: new Date(),
+					scope: _scope_name,
+					values: []
+				}
+			}
+			_node_scopes[_scope_name].values.push(value);			
+		})
+
+		for (let _scope_name in _node_scopes) {
+			let _scope: ScopeValues = _node_scopes[_scope_name];
+			_node_wrapper.nodevalue.scopes[_scope_name] = _scope;
+			_node_wrapper.scope_subject.next(_scope);
+		}
+
+		values.forEach( (value: NetworkValue) => {
+			let _value = this._getOrCreateValue(nodeid, value);
+			_value.value = value;
+			_value.last_fetch = new Date();
+			_value.subject.next(value);
+		});
+	}
+
+	private _fetchAllValues(): void {
+		console.debug("values-svc: fetch all values");
+		let _nodes: NetworkNode[] = this._nodes_svc.getKnownNodes();
+		_nodes.forEach( (node: NetworkNode) => {
+			let endpoint = `/api/nodes/${node.id}/values`;
+			this._http.get<NetworkValue[]>(endpoint)
+			.pipe(catchError( () => merge([])))
+			.subscribe( (values: NetworkValue[]) => {
+				this._updateAllValues(node.id, values);
+			})
+		});
+		
 	}
 
 	public getValues(nodeid: number): NetworkValue[] {
@@ -193,7 +251,6 @@ export class ValuesService {
 			_value_wrapper.subject.next(value);
 			// XXX: we're not updating the scope here. We should!
 		});
-		console.debug(`getvaluebyid(${nodeid}): `, _value_wrapper.subject);
 		return _value_wrapper.subject;
 	}
 

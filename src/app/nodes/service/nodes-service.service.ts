@@ -130,8 +130,12 @@ export class NodesService {
 		return this._nodes_subject;
 	}
 
+	public getKnownNodes(): NetworkNode[] {
+		return Object.values(this._nodes_data);
+	}
+
 	public clearNodes(): void {
-		this._nodes_data = [];
+		this._nodes_data = {};
 		this._nodes_subject.next([]);
 	}
 
