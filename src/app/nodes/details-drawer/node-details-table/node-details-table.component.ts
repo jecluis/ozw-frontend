@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { NetworkValue } from '../../../types/Value';
 import { FormBuilder, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { ValuesService } from '../../service/values-service.service';
 
 @Component({
 	selector: 'app-node-details-table',
@@ -32,7 +33,7 @@ export class NodeDetailsTableComponent
 	@Input() scope: string
 	@Input() node_id: number;
 
-  	datasource = new NodeDetailsTableDataSource(this.http);
+  	datasource = new NodeDetailsTableDataSource(this._values_svc);
 	displayedColumns = ['label', 'data'];
 	values_observer: BehaviorSubject<NetworkValue[]> =
 		this.datasource.getNodeDetailsSubject();
@@ -41,7 +42,8 @@ export class NodeDetailsTableComponent
 
 	constructor(
 		private http: HttpClient,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private _values_svc: ValuesService
 	) { }
 
 	ngOnInit() {

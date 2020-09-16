@@ -5,6 +5,7 @@ import { map, catchError, finalize } from 'rxjs/operators';
 import { Observable, merge, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { NetworkValue } from '../../../types/Value';
+import { ValuesService, ScopeValues } from '../../service/values-service.service';
 
 
 
@@ -23,7 +24,7 @@ export class NodeDetailsTableDataSource
 	private node_details_subject =
 		new BehaviorSubject<NetworkValue[]>([]);
 
-	constructor(private http: HttpClient) {
+	constructor(private _values_svc: ValuesService) {
 		super();
 	}
 
@@ -92,16 +93,13 @@ export class NodeDetailsTableDataSource
 		return;
 		}
 
-		let endpoint = '/api/nodes/'+node_id+'/values/genre/'+scope;
-		let node_details =
-		this.http.get<NetworkValue[]>(endpoint)
-		.pipe(
-			catchError( () => merge([]) ),
-			finalize( () => console.log("got node scope"))
-		)
-		.subscribe( values => {
-			this.node_details = values;
-			console.log("values = ", values);
+		this._values_svc.getValuesByScope(node_id, scope)
+		.subscribe( (scope_values: ScopeValues) => {
+
+			if (!scope_values || scope_values.scope != scope) {
+				return;
+			}
+			this.node_details = scope_values.values;
 			this.node_details_subject.next(this.node_details);
 		});
 	}
