@@ -6,12 +6,11 @@
  * the terms of the EUROPEAN UNION PUBLIC LICENSE v1.2, as published by the
  * European Comission.
  */
-import { Injectable, WrappedValue } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, merge, interval } from 'rxjs';
-import { NetworkValue, Value } from 'src/app/types/Value';
+import { NetworkValue, APIValueSetRequest } from '../../types/Value';
 import { catchError } from 'rxjs/operators';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { NodesService } from './nodes-service.service';
 import { NetworkNode } from '../table/nodes-table-datasource';
 
@@ -71,8 +70,19 @@ export class ValuesService {
 		return (now - last_fetch.getTime() >= this._fetch_interval);
 	}
 
+	private _nodeExists(nodeid: number): boolean {
+		return (nodeid in this._values_by_node);
+	}
+
+	private _valueIDExists(nodeid: number, valueid: string): boolean {
+		if (!this._nodeExists(nodeid)) {
+			return false;
+		}
+		return (valueid in this._values_by_node[nodeid].nodevalue.values);
+	}
+
 	private _getOrCreateNode(nodeid: number): NodeValueWrapper {
-		if (!(nodeid in this._values_by_node)) {
+		if (!this._nodeExists(nodeid)) {
 			console.debug(`values-svc: creating node ${nodeid}`);
 			this._values_by_node[nodeid] = {
 				nodevalue: {
@@ -103,7 +113,7 @@ export class ValuesService {
 		nodeid: number, valueid: string
 	): ValueWrapper {
 		let _node_wrapper: NodeValueWrapper = this._getOrCreateNode(nodeid);
-		if (!(valueid in _node_wrapper.nodevalue.values)) {
+		if (!this._valueIDExists(nodeid, valueid)) {
 			let _value: ValueWrapper = {
 				valueid: valueid,
 				value: {} as NetworkValue,
@@ -120,7 +130,7 @@ export class ValuesService {
 	): ValueWrapper {
 		let _node_wrapper: NodeValueWrapper = this._getOrCreateNode(nodeid);
 		let _valueid = value.value.value_id;
-		if (!(_valueid in _node_wrapper.nodevalue.values)) {
+		if (!this._valueIDExists(nodeid, _valueid)) {
 			let _value: ValueWrapper = {
 				valueid: _valueid,
 				value: value,
@@ -248,10 +258,47 @@ export class ValuesService {
 		.pipe(
 			catchError( () => merge([]))
 		).subscribe( (value: NetworkValue) => {
+			_value_wrapper.value = value;
 			_value_wrapper.subject.next(value);
 			// XXX: we're not updating the scope here. We should!
 		});
 		return _value_wrapper.subject;
+	}
+
+	public setValueByID(
+		nodeid: number, valueid: string, value: boolean|number|string
+	): void {
+		if (!this._nodeExists(nodeid)) {
+			return; // XXX: throw!
+		}
+		if (!this._valueIDExists(nodeid, valueid)) {
+			return; // XXX: throw!
+		}
+		let _value_wrapper: ValueWrapper =
+			this._getOrCreateValueByID(nodeid, valueid);
+		console.log(`values-svc: set-value-by-id wrapper `, _value_wrapper);
+		let _value: NetworkValue = _value_wrapper.value;
+		let _request: APIValueSetRequest = {
+			value_id: valueid,
+			value_type: _value.value.type,
+			node_id: nodeid,
+			class_id: _value.value.class_id,
+			instance: _value.value.instance,
+			index: _value.value.index,
+			value: value
+		};
+		let endpoint = `/api/nodes/${nodeid}/values/id/${valueid}`;
+		console.debug(
+			`values-svc: set node ${nodeid} value ${valueid} to `, _request);
+		this._http.post<boolean>(endpoint, _request)
+		.subscribe(
+			(ret: boolean) => {
+				console.debug(`values-svc: asked to set node ${nodeid} value ${valueid} to`, _request);
+			},
+			(err: any) => {
+				console.debug(`values-svc: error setting node ${nodeid} value ${valueid} to`, _request, ": ", err);
+			}
+		);
 	}
 
 	public getSwitchState(
