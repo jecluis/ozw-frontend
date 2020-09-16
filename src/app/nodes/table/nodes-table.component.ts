@@ -10,7 +10,7 @@ import { AfterViewInit, Component, OnInit, ViewChild, Output, EventEmitter, Chan
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { NodesTableDataSource, NetworkNode } from './nodes-table-datasource';
+import { NodesTableDataSource, NetworkNode, NetworkNodeStateEnum } from './nodes-table-datasource';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NetworkService } from '../../network/service/network.service';
 import { NodesService } from '../service/nodes-service.service';
@@ -142,6 +142,11 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
 
 	isSwitchedOn(nodeid: number): BehaviorSubject<boolean|undefined> {
+
+		let node: NetworkNode = this._nodes_svc.getNodeById(nodeid);
+		if (node.state.state != NetworkNodeStateEnum.Alive) {
+			return undefined;
+		}
 
 		if (nodeid in this._switch_node) {
 			return this._switch_state[nodeid];
