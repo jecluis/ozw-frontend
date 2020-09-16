@@ -16,7 +16,6 @@ export interface NodeDetailsTab {
 })
 export class NodeDetailsTabComponent implements OnInit, OnChanges {
 
-  detailTabs: NodeDetailsTab[];
   @Input() node_id: number;
   @Input() node_is_controller: boolean;
   @Output() close_details = new EventEmitter<boolean>();
@@ -29,11 +28,7 @@ export class NodeDetailsTabComponent implements OnInit, OnChanges {
   }
   
   ngOnChanges() {
-    this.detailTabs =[
-          { label: 'first', content: 'content 1 for node '+this.node_id },
-          { label: 'second', content: 'content 2' },
-          { label: 'third', content: 'content 3'}
-        ];
+   
   }
 
   closeDetails() {
