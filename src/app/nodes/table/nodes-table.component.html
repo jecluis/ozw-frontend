@@ -84,8 +84,26 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Seen</th>
     <td mat-cell *matCellDef="let row">{{getLastSeenStr(row)}}</td>
   </ng-container>
+  <ng-container matColumnDef="switch">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Switch</th>
+    <td mat-cell *matCellDef="let row">
+      <ng-container *ngIf="row.type.is_switch">
+        <ng-container [ngSwitch]="isSwitchedOn(row.id) | async">
+          <mat-icon *ngSwitchDefault
+              style="color: grey"
+              matTooltip="Switch">power_settings_new</mat-icon>
+          <mat-icon *ngSwitchCase="true"
+              style="color: green"
+              matTooltip="Switch On">power_settings_new</mat-icon>
+          <mat-icon *ngSwitchCase="false"
+              style="color: red"
+              matTooltip="Switch Off">power_settings_new</mat-icon>
+        </ng-container>
+      </ng-container>
+    </td>
+  </ng-container>
   <ng-container matColumnDef="metering">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Metering?</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Metering</th>
     <td mat-cell *matCellDef="let row">
         <ng-container *ngIf="row.type.is_meter">
         <mat-icon style="color: grey" matTooltip="Is Metering">data_usage</mat-icon>

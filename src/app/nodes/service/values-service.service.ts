@@ -197,4 +197,10 @@ export class ValuesService {
 		return _value_wrapper.subject;
 	}
 
+	public getSwitchState(
+		nodeid: number
+	): BehaviorSubject<NetworkValue|undefined> {
+		let switch_value_id = `${nodeid}-37-1-0`;
+		return this.getValueByID(nodeid, switch_value_id);
+	}
 }

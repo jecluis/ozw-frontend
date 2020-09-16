@@ -14,6 +14,9 @@ import { NodesTableDataSource, NetworkNode } from './nodes-table-datasource';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { NetworkService } from '../../network/service/network.service';
 import { NodesService } from '../service/nodes-service.service';
+import { ValuesService } from '../service/values-service.service';
+import { NetworkValue } from 'src/app/types/Value';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-nodes-table',
@@ -38,7 +41,7 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 	/** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 	displayedColumns = [
 		'id', 'product', 'type', 'state', 'capabilities',
-		'lastseen', 'metering', 'insights'
+		'lastseen', 'switch', 'metering', 'insights'
 	];
 	expandedNode: NetworkNode | null;
 
@@ -46,8 +49,14 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
 	current_network_state: string = 'unknown';
 
+	private _switch_node:
+		{[id: number]: BehaviorSubject<NetworkValue|undefined>} = {};
+	private _switch_state:
+		{[id: number]: BehaviorSubject<boolean|undefined>} = {};
+
 	constructor(
 		private _nodes_svc: NodesService,
+		private _values_svc: ValuesService,
 		private network: NetworkService) { }
 
 	ngOnInit() {
@@ -129,5 +138,25 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
 		let str: string = `${time_lst.join(', ')} ago`;
 		return str;
+	}
+
+
+	isSwitchedOn(nodeid: number): BehaviorSubject<boolean|undefined> {
+
+		if (nodeid in this._switch_node) {
+			return this._switch_state[nodeid];
+		} else {
+			this._switch_node[nodeid] = this._values_svc.getSwitchState(nodeid);
+			this._switch_state[nodeid] =
+				new BehaviorSubject<boolean|undefined>(undefined);
+			this._switch_node[nodeid].subscribe(
+				(value: NetworkValue|undefined) => {
+					let _is_on: boolean =
+						(!!value && value.value.value as boolean == true);
+					this._switch_state[nodeid].next(_is_on);
+				}
+			);
+		}
+		return this._switch_state[nodeid];
 	}
 }
