@@ -29,8 +29,7 @@
 
           <ng-container *ngSwitchCase="'list'">
             <form [formGroup]="form_groups[row.value.value_id]"
-                  (ngSubmit)="onSubmit(row.value.value_id)"
-                  (change)="onChange(row.value.value_id)">
+                  (ngSubmit)="onSubmit(row)">
               <mat-form-field appearance="fill"
                     placeholder="{{row.value.value}}">
                     <mat-select formControlName="valuectrl">
@@ -44,36 +43,51 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="'short'">
-            <mat-form-field appearance="fill">
-              <mat-label>{{row.value.type}}</mat-label>
-              <input matInput type="number"
-                  [placeholder]="row.value.value"
-                  [min]="row.value.min" [max]="row.value.max"
-                  [value]="row.value.value"/>
-              <span matSuffix>{{row.value.units}}</span>
-            </mat-form-field>
+            <form [formGroup]="form_groups[row.value.value_id]"
+                  (ngSubmit)="onSubmit(row)">
+              <mat-form-field appearance="fill">
+                <mat-label>{{row.value.type}}</mat-label>
+                <input matInput type="number"
+                    [placeholder]="row.value.value"
+                    [min]="row.value.min" [max]="row.value.max"
+                    [value]="row.value.value"
+                    formControlName="valuectrl"/>
+                <span matSuffix>{{row.value.units}}</span>
+              </mat-form-field>
+              <button mat-stroked-button type="submit">submit</button>
+            </form>
           </ng-container>
 
           <ng-container *ngSwitchCase="'byte'">
-            <mat-form-field appearance="fill">
-              <mat-label>{{row.value.type}}</mat-label>
-              <input matInput type="number"
-                  [placeholder]="row.value.value"
-                  [min]="row.value.min" [max]="row.value.max"
-                  [value]="row.value.value"/>
-              <span matSuffix>{{row.value.units}}</span>
-            </mat-form-field>
+            <form [formGroup]="form_groups[row.value.value_id]"
+                  (ngSubmit)="onSubmit(row)">
+              <mat-form-field appearance="fill">
+                <mat-label>{{row.value.type}}</mat-label>
+                <input matInput type="number"
+                    [placeholder]="row.value.value"
+                    [min]="row.value.min" [max]="row.value.max"
+                    [value]="row.value.value"
+                    formControlName="valuectrl"/>
+                <span matSuffix>{{row.value.units}}</span>
+              </mat-form-field>
+              <button mat-stroked-button type="submit">submit</button>
+            </form>
           </ng-container>
 
           <ng-container *ngSwitchCase="'int'">
-            <mat-form-field appearance="fill">
-              <mat-label>{{row.value.type}}</mat-label>
-              <input matInput type="number"
-                  [placeholder]="row.value.value"
-                  [min]="row.value.min" [max]="row.value.max"
-                  [value]="row.value.value"/>
-              <span matSuffix>{{row.value.units}}</span>
-            </mat-form-field>
+            <form [formGroup]="form_groups[row.value.value_id]"
+                  (ngSubmit)="onSubmit(row)">
+              <mat-form-field appearance="fill">
+                <mat-label>{{row.value.type}}</mat-label>
+                <input matInput type="number"
+                    [placeholder]="row.value.value"
+                    [min]="row.value.min" [max]="row.value.max"
+                    [value]="row.value.value"
+                    formControlName="valuectrl"/>
+                <span matSuffix>{{row.value.units}}</span>
+              </mat-form-field>
+              <button mat-stroked-button type="submit">submit</button>
+            </form>
           </ng-container>
 
           <ng-container *ngSwitchCase="'bool'">

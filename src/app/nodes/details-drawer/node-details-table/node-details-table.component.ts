@@ -40,6 +40,7 @@ export class NodeDetailsTableComponent
 	form_controls: {[id: string]: FormControl} = {};
 	form_groups: {[id: string]: FormGroup} = {};
 
+
 	constructor(
 		private http: HttpClient,
 		private fb: FormBuilder,
@@ -47,7 +48,7 @@ export class NodeDetailsTableComponent
 	) { }
 
 	ngOnInit() {
-		console.log("init datasource for scope ", this.scope);
+		console.log("details: init datasource for scope ", this.scope);
 		this.values_observer.subscribe( (values) => {
 			values.forEach( (value: NetworkValue) => {
 				let value_id: string = value.value.value_id;
@@ -62,18 +63,23 @@ export class NodeDetailsTableComponent
 	}
 
 	ngOnChanges() {
+		this.datasource.clearState();
 		this.datasource.loadDetails(this.node_id, this.scope);
 	}
 
 	ngAfterViewInit() {
+		console.log("details: after view init");
 		this.datasource.sort = this.sort;
 		this.datasource.paginator = this.paginator;
 		this.table.dataSource = this.datasource;
 	}
 
-	public onSubmit(valueid: string) {
-		let value = this.form_groups[valueid].value;
-		console.log(`details: submit id ${valueid} value`, value);
+	public onSubmit(net_value: NetworkValue) {
+		let _value = net_value.value;
+		let _valueid = _value.value_id;
+		let _new_value = this.form_groups[_valueid].value['valuectrl'];
+		console.log(`details: submit id ${_valueid} value`, _new_value);
+		this.setValue(net_value, _new_value);
 	}
 
 	public onChange(valueid: string) {
@@ -87,6 +93,15 @@ export class NodeDetailsTableComponent
 		let _new_value: boolean = !_value.value;
 		this._values_svc.setValueByID(
 			_value.node_id, _value.value_id, _new_value);		
+	}
+
+	public setValue(
+		net_value: NetworkValue, new_value: string|number|boolean
+	): void {
+		console.log(`details: set value `, net_value, ` to ${new_value}`);
+		let _nodeid: number = net_value.value.node_id;
+		let _valueid: string = net_value.value.value_id;
+		this._values_svc.setValueByID(_nodeid, _valueid, new_value);
 	}
 
 	public isDisabled(value: NetworkValue) {

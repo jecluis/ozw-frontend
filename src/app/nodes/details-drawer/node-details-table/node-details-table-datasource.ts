@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, catchError, finalize } from 'rxjs/operators';
-import { Observable, merge, BehaviorSubject } from 'rxjs';
+import { Observable, merge, BehaviorSubject, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { NetworkValue } from '../../../types/Value';
 import { ValuesService, ScopeValues } from '../../service/values-service.service';
@@ -23,6 +23,7 @@ export class NodeDetailsTableDataSource
 	node_details: NetworkValue[] = [];
 	private node_details_subject =
 		new BehaviorSubject<NetworkValue[]>([]);
+	private node_subject_subscription: Subscription = undefined;
 
 	constructor(private _values_svc: ValuesService) {
 		super();
@@ -52,7 +53,14 @@ export class NodeDetailsTableDataSource
 	 *  Called when the table is being destroyed. Use this function, to clean up
 	 * any open connections or free any held resources that were set up during connect.
 	 */
-	disconnect() {}
+	disconnect() {
+		console.debug("details-datasource: disconnect");
+		if (this.node_subject_subscription) {
+			console.debug("details-datasource: unsubscribe");
+			this.node_subject_subscription.unsubscribe();
+		}
+
+	}
 
 	/**
 	 * Paginate the data (client-side). If you're using server-side pagination,
@@ -93,15 +101,29 @@ export class NodeDetailsTableDataSource
 		return;
 		}
 
-		this._values_svc.getValuesByScope(node_id, scope)
-		.subscribe( (scope_values: ScopeValues) => {
+		this.node_subject_subscription =
+			this._values_svc.getValuesByScope(node_id, scope).subscribe(
+				(scope_values: ScopeValues) => {
 
-			if (!scope_values || scope_values.scope != scope) {
-				return;
-			}
-			this.node_details = scope_values.values;
-			this.node_details_subject.next(this.node_details);
-		});
+					if (!scope_values || scope_values.scope != scope) {
+						return;
+					}
+					this.node_details = scope_values.values;
+					this.node_details_subject.next(this.node_details);
+					console.debug(`details-datasource: updated details for node ${node_id} with `, this.node_details);
+				}
+			);
+	}
+
+	public clearState(): void {
+		console.log("details-datasource: clear state");
+		if (this.node_subject_subscription) {
+			console.log("details-datasource: unsubscribe");
+			this.node_subject_subscription.unsubscribe();
+			this.node_subject_subscription = undefined;
+		}
+		this.node_details = [];
+		this.node_details_subject.next([]);
 	}
 
 	public getNodeDetailsSubject(): BehaviorSubject<NetworkValue[]> {
