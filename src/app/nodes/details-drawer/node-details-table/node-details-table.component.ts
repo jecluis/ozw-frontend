@@ -14,8 +14,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { NodeDetailsTableDataSource, } from './node-details-table-datasource';
 import { HttpClient } from '@angular/common/http';
-import { NetworkValue } from '../../../types/Value';
-import { FormBuilder, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { NetworkValue, Value } from '../../../types/Value';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { ValuesService } from '../../service/values-service.service';
 
@@ -78,5 +78,18 @@ export class NodeDetailsTableComponent
 
 	public onChange(valueid: string) {
 		console.log(`details: change id ${valueid}`);
+	}
+
+	public toggleSwitch(net_value: NetworkValue): void {
+		console.log(`details: value: `, net_value);
+		let _value: Value = net_value.value;
+		console.log(`details: toggle ${_value.value_id}`);
+		let _new_value: boolean = !_value.value;
+		this._values_svc.setValueByID(
+			_value.node_id, _value.value_id, _new_value);		
+	}
+
+	public isDisabled(value: NetworkValue) {
+		return false;
 	}
 }

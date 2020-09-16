@@ -77,7 +77,10 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="'bool'">
-            <mat-slide-toggle [checked]="row.value.value"></mat-slide-toggle>
+            <mat-slide-toggle
+              [checked]="row.value.value"
+              [disabled]="isDisabled(row)"
+              (toggleChange)="toggleSwitch(row)"></mat-slide-toggle>
           </ng-container>
 
           <ng-container *ngSwitchCase="'button'">
