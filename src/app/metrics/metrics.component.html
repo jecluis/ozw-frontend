@@ -1,0 +1,67 @@
+<div class="grid-container">
+  <h1 class="mat-h1">Metrics</h1>
+  <mat-grid-list cols="4" rowHeight="150px">
+
+     <mat-grid-tile colspan=2 rowspan=3>
+      <mat-card class="metrics-card">
+        <h2>Energy Consumption Today</h2>
+        <mat-card-content>
+        <div style="position: absolute; left: 0; right: 0; top: 50px; bottom: 30px">
+          <ngx-charts-line-chart
+            [legendTitle]="'Wattage'"
+            [legend]="true"
+            [results]="watt_today"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxisLabel]="'Day'"
+            [yAxisLabel]="'Watt'"          
+            [yAxis]="true"
+            [xAxis]="true"
+            [gradient]="true">
+          </ngx-charts-line-chart>
+        </div>
+      </mat-card-content>
+      </mat-card>
+     </mat-grid-tile>
+
+    <mat-grid-tile colspan=1 rowspan=3>
+      <mat-card class="metrics-card">
+        <h2>30 Days Consumption</h2>
+        <div style="position: absolute; left: 0; right: 0; top: 70px; bottom: 30px">
+        <ngx-charts-gauge
+          [legendTitle]="'kWh'"
+          [legend]="false"
+          [legendPosition]="'right'"
+          [results]="kWh"
+          [units]="'kWh'"
+          [max]="kWh_max">
+        </ngx-charts-gauge>
+      </div>
+      </mat-card>
+    </mat-grid-tile>
+    
+    <mat-grid-tile colspan=1 rowspan=3>
+      <app-metrics-per-time-slot></app-metrics-per-time-slot>
+      <!--
+      <mat-card class="metrics-card">
+        <h2>30 Days Consumption per time slot</h2>
+        <div style="position: absolute; left: 0; right: 0; top: 70px; bottom: 30px">
+        <ngx-charts-bar-vertical-stacked          
+          [legend]="false"
+          [results]="kWh_per_day"
+          [gradient]="false"
+          [xAxis]="true"
+          [yAxis]="true"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'Day'"
+          [yAxisLabel]="'kWh'"
+        >
+        </ngx-charts-bar-vertical-stacked>
+      </div>
+      </mat-card>
+      -->
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>

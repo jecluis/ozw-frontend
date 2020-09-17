@@ -4,6 +4,7 @@ import { NodesComponent } from './nodes/main-view/nodes.component';
 import { SettingsDashboardComponent } from './settings/dashboard/dashboard.component';
 import { NetworkViewComponent } from './network/view/network-view.component';
 import { ConfigViewComponent } from './config/view/config-view.component';
+import { MetricsComponent } from './metrics/metrics.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'network', component: SettingsDashboardComponent },
   { path: 'topology', component: NetworkViewComponent },
   { path: 'config', component: ConfigViewComponent },
+  { path: 'metrics', component: MetricsComponent },
   { path: '**', component: SettingsDashboardComponent }
 ];
 
