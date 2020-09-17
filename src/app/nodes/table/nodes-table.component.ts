@@ -40,7 +40,7 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
 	/** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 	displayedColumns = [
-		'id', 'product', 'type', 'state', 'capabilities',
+		'id', 'product', 'name', 'type', 'state', 'capabilities',
 		'lastseen', 'switch', 'metering', 'insights'
 	];
 	expandedNode: NetworkNode | null;
