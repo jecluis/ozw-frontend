@@ -10,8 +10,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NetworkNode } from '../table/nodes-table-datasource';
 import { catchError, finalize } from 'rxjs/operators';
-import { merge, BehaviorSubject, interval, Observable } from 'rxjs';
+import { merge, BehaviorSubject, interval } from 'rxjs';
 import { NetworkService, NetworkState } from '../../network/service/network.service';
+import { APISetNodeNameRequest } from '../../types/Node';
 
 export interface NodeNeighbors {
 	node: NetworkNode;
@@ -150,5 +151,27 @@ export class NodesService {
 
 	public nodeExists(id: number): boolean {
 		return (id in this._nodes_data);
+	}
+
+	public setNodeName(id: number, name: string): boolean {
+		console.debug(`nodes-svc: set node ${id} name to ${name}`);
+		if (!name || name == "") {
+			return false;
+		}
+		let endpoint: string = `/api/nodes/${id}/name`;
+		let body: APISetNodeNameRequest = {
+			name: name
+		};
+		console.debug(`nodes-svc: body request: `, body);
+		this._http.post<boolean>(endpoint, body)
+		.subscribe(
+			(ret) => {
+				console.info(`nodes-svc: requested name set for node ${id}`);
+			},
+			(err) => {
+				console.error(`nodes-svc: error setting name for node ${id}`);
+			}
+		);
+		return true;
 	}
 }

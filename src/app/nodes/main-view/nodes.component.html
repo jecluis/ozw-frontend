@@ -5,7 +5,28 @@
       [mode]="'over'"
       [opened]="is_drawer_open === true">
     <mat-toolbar>
-      <span>Node {{show_details_node_id}}</span>
+      <div *ngIf="!edit_name; else doEditName">
+        <span>{{show_name}}</span>
+        <button mat-icon-button (click)="edit_name = true">
+          <mat-icon>create</mat-icon>
+        </button>
+      </div>
+      <ng-template #doEditName>
+        <form [formGroup]="edit_name_form_group"
+              (ngSubmit)="setName()">
+          <mat-form-field>
+            <input matInput
+                type="text"
+                formControlName="ctrl"/>
+          </mat-form-field>
+          <button mat-icon-button type="submit">
+            <mat-icon>done_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="edit_name = false">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </form>
+      </ng-template>
       <div style="width: 100%; text-align: right;">
         <button mat-stroked-button aria-label="Close"
         color="warn"

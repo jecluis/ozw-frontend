@@ -61,3 +61,8 @@ export interface NetworkNode {
 	state: NetworkNodeState;
 	last_seen: Date;
 }
+
+
+export interface APISetNodeNameRequest {
+	name: string;
+}
