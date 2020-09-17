@@ -98,7 +98,7 @@
           </ng-container>
 
           <ng-container *ngSwitchCase="'button'">
-            <button mat-raised-button>{{row.value.label}}</button>
+            <button mat-raised-button [disabled]="true">{{row.value.label}}</button>
           </ng-container>
         </ng-template>
       </td>
