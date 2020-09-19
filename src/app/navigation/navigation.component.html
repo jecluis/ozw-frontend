@@ -23,33 +23,33 @@
             <mat-icon
             matTooltip="network nodes"
             style="padding: 3px;"
-            >router</mat-icon>
+            >devices</mat-icon>
             <span *ngIf="isExpanded"
             style="font-size: 20px;">nodes</span>
           </a>
       </mat-list-item>
       <mat-list-item>
-        <a mat-list-item routerLink="/settings"
-            routerLinkActive="active"
-            aria-label="settings">
-            <mat-icon
-            matTooltip="global settings"
-            style="padding: 3px;"
-            >settings</mat-icon>
-            <span *ngIf="isExpanded"
-            style="font-size: 20px;">settings</span>
-        </a>
-      </mat-list-item>
-      <mat-list-item>
-        <a mat-list-item routerLink="/network-view"
+        <a mat-list-item routerLink="/network"
             routerLinkActive="active"
             aria-label="network">
             <mat-icon
-              matTooltip="network"
-              style="padding: 3px;"
-            >share</mat-icon>
+            matTooltip="network"
+            style="padding: 3px;"
+            >router</mat-icon>
             <span *ngIf="isExpanded"
-              style="font-size: 20px;">network</span>
+            style="font-size: 20px;">network</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item>
+        <a mat-list-item routerLink="/topology"
+            routerLinkActive="active"
+            aria-label="topology">
+            <mat-icon
+              matTooltip="topology"
+              style="padding: 3px;"
+            >device_hub</mat-icon>
+            <span *ngIf="isExpanded"
+              style="font-size: 20px;">topology</span>
         </a>
       </mat-list-item>
     </mat-nav-list>

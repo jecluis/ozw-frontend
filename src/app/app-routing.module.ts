@@ -8,8 +8,8 @@ import { NetworkViewComponent } from './network/view/network-view.component';
 const routes: Routes = [
   { path: '', component: SettingsDashboardComponent },
   { path: 'nodes', component: NodesComponent },
-  { path: 'settings', component: SettingsDashboardComponent },
-  { path: 'network-view', component: NetworkViewComponent },
+  { path: 'network', component: SettingsDashboardComponent },
+  { path: 'topology', component: NetworkViewComponent },
   { path: '**', component: SettingsDashboardComponent }
 ];
 
