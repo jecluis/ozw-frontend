@@ -40,6 +40,7 @@ export interface PrometheusReply {
 export interface ChartValue {
 	value: number;
 	name: string;
+	tooltipText?: string;
 }
 
 export interface LineSeriesEntry {

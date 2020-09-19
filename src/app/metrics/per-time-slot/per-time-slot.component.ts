@@ -128,9 +128,11 @@ export class PerTimeSlotComponent implements OnInit {
 				series: []
 			};
 			for (let slot in this.kWh_per_day_map[day]) {
+				let kwh: number = this.kWh_per_day_map[day][slot];
 				let chartvalue: ChartValue = {
 					name: slot,
-					value: this.kWh_per_day_map[day][slot]
+					value: kwh,
+					tooltipText: `${kwh} kWh`
 				}
 				series_entry.series.push(chartvalue);
 			}

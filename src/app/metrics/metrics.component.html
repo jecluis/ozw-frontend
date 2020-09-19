@@ -17,7 +17,18 @@
             [yAxisLabel]="'Watt'"          
             [yAxis]="true"
             [xAxis]="true"
-            [gradient]="true">
+            [gradient]="true"
+            [xAxisTickFormatting]="wattChartFormatXAxis"
+            [tooltipDisabled]="false"
+          >
+            <ng-template #tooltipTemplate let-model="model">
+              <div>
+                <span>
+                  {{model.series}} @ {{getTimeFromISODate(model.name)}}
+                </span><br/>
+                <span>{{model.value}}W</span>
+              </div>
+            </ng-template>
           </ngx-charts-line-chart>
         </div>
       </mat-card-content>

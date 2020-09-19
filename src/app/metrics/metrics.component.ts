@@ -141,11 +141,16 @@ export class MetricsComponent implements OnInit {
 			}
 			entry.values.forEach( (value: PrometheusMatrixResult) => {
 				let date = new Date(+value[0]*1000);
+				// let series_name: string = " ";
+				// if (date.getMinutes() == 30 || date.getMinutes() == 0) {
+				// 	series_name = `${date.getHours()}h${date.getMinutes()}m`;
+				// }
 				let watt = +(<string> value[1]);
 				watt = Math.round((watt + Number.EPSILON) * 100) / 100;
 				series_entry.series.push({
-					name: `${date.getHours()}h${date.getMinutes()}m`,
-					value: watt
+					name: date.toISOString(),
+					value: watt,
+					tooltipText: `${watt} W`
 				});
 			});
 			watts.push(series_entry);	
@@ -153,5 +158,20 @@ export class MetricsComponent implements OnInit {
 		this.watt_today = [...watts];
 		console.debug("watts today: ", this.watt_today);
 	}
+
+	public wattChartFormatXAxis(value: string) {
+		let date = new Date(value);
+		let minutes = date.getMinutes();
+		if (minutes == 0 || minutes == 30) {
+			return `${date.getHours()}h${minutes}m`;
+		}
+		return "";
+	}
+
+	public getTimeFromISODate(datestr: string): string {
+		let date = new Date(datestr);
+		return `${date.getHours()}h${date.getMinutes()}m`;
+	}
+
 
 }
