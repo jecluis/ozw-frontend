@@ -58,14 +58,12 @@ export class PerTimeSlotComponent implements OnInit {
 
 	constructor(private _http: HttpClient) { }
 
-	// public kWh_per_day: LineSeriesEntry[] = [];
 	public chart_data: LineSeriesEntry[] = [];
 
 	private kWh_per_day_map: {[id: string]: SlotResultMap} = {};
 	private _slots_updated_observer = new BehaviorSubject<boolean>(false);
 	private _slots_updated_subscription: Subscription = undefined;
 
-	// private slots: {[id: string]: Slot} = {
 	private slots: Slot[] = [
 		{
 			name: "high",
