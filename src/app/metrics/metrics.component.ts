@@ -18,6 +18,7 @@ import {
 	PrometheusReplyData,
 	PrometheusReply
 } from './types';
+import { NodesService } from '../nodes/service/nodes-service.service';
 
 
 @Component({
@@ -36,7 +37,10 @@ export class MetricsComponent implements OnInit {
 	public kWh_per_day: LineSeriesEntry[] = [];
 	public kWh_per_day_series: {[id: string]: LineSeriesEntry} = {};
 
-	constructor(private _http: HttpClient) { }
+	constructor(
+		private _http: HttpClient,
+		private _node_svc: NodesService
+	) { }
 
 	ngOnInit(): void {
 		this._getMetrics();
@@ -111,6 +115,23 @@ export class MetricsComponent implements OnInit {
 		});
 	}
 
+	private _getNameFromNode(nodestr: string): string {
+		let node_name = nodestr;
+		let t: string[] = node_name.split('-');
+		// console.debug(`node split name: `, t);
+		if (t.length == 2) {
+			let node_id: number = +(t[1]);
+			// console.debug(`attempt getting info for node ${node_id}`);
+			if (this._node_svc.nodeExists(node_id)) {
+				let node = this._node_svc.getNodeById(node_id);
+				if (node.info.name && node.info.name != "") {
+					node_name = node.info.name;
+				}
+			}
+		}
+		return node_name;
+	}
+
 	private _updateKWh(data: PrometheusReplyData): void {
 		let piechart: ChartValue[] = [];
 
@@ -119,7 +140,7 @@ export class MetricsComponent implements OnInit {
 			let value: number = +(<string> entry.value[1]);
 			value = Math.round((value + Number.EPSILON) * 100)/100;
 			let chart_value: ChartValue = {
-				name: entry.metric.node,
+				name: this._getNameFromNode(entry.metric.node),
 				value: value
 			};
 			piechart.push(chart_value);
@@ -135,8 +156,9 @@ export class MetricsComponent implements OnInit {
 		let watts = [];
 		let result = data.result as PrometheusMatrixReplyResult[];
 		result.forEach( (entry: PrometheusMatrixReplyResult) => {
+			let node_name = this._getNameFromNode(entry.metric.node);
 			let series_entry: LineSeriesEntry = {
-				name: entry.metric.node,
+				name: node_name,
 				series: []
 			}
 			entry.values.forEach( (value: PrometheusMatrixResult) => {
