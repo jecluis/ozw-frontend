@@ -19,7 +19,6 @@ import {
 	PrometheusReply
 } from './types';
 
-import { SlotInterval } from './per-time-slot/per-time-slot.component';
 
 @Component({
   selector: 'app-metrics',
