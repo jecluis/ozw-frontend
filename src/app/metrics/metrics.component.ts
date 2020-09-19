@@ -85,7 +85,7 @@ export class MetricsComponent implements OnInit {
 		let start = start_date.toISOString();
 		let end = end_date.toISOString();
 		let url = "http://172.20.20.51:9090/api/v1";
-		let endpoint = `${url}/query_range?query=${query}&start=${start}&end=${end}&step=30m`;
+		let endpoint = `${url}/query_range?query=${query}&start=${start}&end=${end}&step=10m`;
 		this._http.get<PrometheusReply>(endpoint)
 		.subscribe( (res: PrometheusReply) => {
 			console.debug(`watt result for day: `, res);
