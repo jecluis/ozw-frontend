@@ -8,7 +8,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
 import {
 	ChartValue,
 	LineSeriesEntry,
@@ -27,7 +26,6 @@ import { NodesService } from '../nodes/service/nodes-service.service';
   styleUrls: ['./metrics.component.scss']
 })
 export class MetricsComponent implements OnInit {
-
 
 	public kWh: ChartValue[] = [];
 	public kWh_max: number = 0;
@@ -101,8 +99,8 @@ export class MetricsComponent implements OnInit {
 		let query = 
 			"sum_over_time("+
 				"("+
-					"(sum_over_time(home_energy_consumption_W[30d])/1000)/"+
-					"count_over_time(home_energy_consumption_W[30d])"+
+					"(sum_over_time(home_energy_consumption_W[30d:10m])/1000)/"+
+					"count_over_time(home_energy_consumption_W[30d:10m])"+
 				")[30d:1h])";
 		let start = "2020-09-17T00:00:01.000Z";
 		let end = "2020-09-17T23:59:59.000Z";
