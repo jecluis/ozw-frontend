@@ -122,21 +122,26 @@ export class MetricsComponent implements OnInit {
     }
 
     private _updateKWh(data: PrometheusReplyData): void {
-        const piechart: ChartValue[] = [];
-
+        const entries: {[id: string]: ChartValue} = {};
         const result = data.result as PrometheusReplyResult[];
         result.forEach( (entry: PrometheusReplyResult) => {
             let _value: number = +(entry.value[1] as string);
             _value = Math.round((_value + Number.EPSILON) * 100) / 100;
+            const _name: string = this._getNameFromNode(entry.metric.node);
             const chart_value: ChartValue = {
-                name: this._getNameFromNode(entry.metric.node),
+                name: _name,
                 value: _value
             };
-            piechart.push(chart_value);
+            entries[_name] = chart_value;
 
             if (_value > this.kWh_max) {
                 this.kWh_max = _value;
             }
+        });
+        // ensure ordering when adding to chart.
+        const piechart: ChartValue[] = [];
+        Object.keys(entries).sort().forEach( (k: string) => {
+            piechart.push(entries[k]);
         });
         this.kWh = [...piechart];
     }
