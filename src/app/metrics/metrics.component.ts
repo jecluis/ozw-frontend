@@ -18,6 +18,8 @@ import {
     PrometheusReply
 } from './types';
 import { NodesService } from '../nodes/service/nodes-service.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { PrometheusService } from './prometheus.service';
 
 
 @Component({
@@ -35,48 +37,30 @@ export class MetricsComponent implements OnInit {
     public kWh_per_day: LineSeriesEntry[] = [];
     public kWh_per_day_series: {[id: string]: LineSeriesEntry} = {};
 
+    public _url: string;
+    public _has_prometheus: boolean = false;
+
+    private observer_kwh: BehaviorSubject<PrometheusReply>;
+    private observer_watt_today: BehaviorSubject<PrometheusReply>;
+    private subscription_kwh: Subscription;
+    private subscription_watt_today: Subscription;
+
     constructor(
         private _http: HttpClient,
-        private _node_svc: NodesService
+        private _node_svc: NodesService,
+        private _prom_svc: PrometheusService
     ) { }
 
     ngOnInit(): void {
-        this._getMetrics();
+        this._setupMetrics();
     }
 
-
-    private _getMetrics(): void {
-        this._getMetricsKWh();
-        // this._getWattSumPerDay();
-        this._getMetricsWattToday();
-        // this._getMetricsKWhSegmented();
+    private _setupMetrics(): void {
+        this._setupMetricsKWh();
+        this._setupMetricsWattToday();
     }
 
-    _getWattSumPerDay(): void {
-        const now: Date = new Date();
-        console.debug(`month: ${now.getMonth()}, date: ${now}`);
-        const firstjan: Date = new Date(2020, 0, 1);
-        console.debug(`first jan: ${firstjan}`);
-        console.debug(`first jan, iso: ${firstjan.toISOString()}`);
-
-        interface DayValue {
-            date: Date;
-            value: number;
-        }
-
-        const query = "sum_over_time(home_energy_consumption_W[24h:1h])";
-        const start = "2020-09-01T00:00:00.000Z";
-        const end = "2020-09-17T23:59:59.000Z";
-        const url = "http://172.20.20.51:9090/api/v1";
-        const endpoint = `${url}/query_range?query=${query}&start=${start}&end=${end}&step=1d`;
-        this._http.get<PrometheusReply>(endpoint)
-        .subscribe( (res: PrometheusReply) => {
-            console.debug(`watt sum per day: `, res);
-        });
-    }
-
-
-    private _getMetricsWattToday(): void {
+    private _setupMetricsWattToday(): void {
         const now = new Date();
         const start_date =
             new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -86,16 +70,21 @@ export class MetricsComponent implements OnInit {
         const query = "home_energy_consumption_W";
         const start = start_date.toISOString();
         const end = end_date.toISOString();
-        const url = "http://172.20.20.51:9090/api/v1";
-        const endpoint = `${url}/query_range?query=${query}&start=${start}&end=${end}&step=10m`;
-        this._http.get<PrometheusReply>(endpoint)
-        .subscribe( (res: PrometheusReply) => {
-            console.debug(`watt result for day: `, res);
-            this._updateWattToday(res.data);
+        const full_query = `query_range?query=${query}&start=${start}&end=${end}&step=10m`;
+        this.observer_watt_today =
+            this._prom_svc.setQuery("watt-today", full_query);
+        this.subscription_watt_today = this.observer_watt_today.subscribe({
+            next: (res: PrometheusReply) => {
+                console.debug("watt result for day: ", res);
+                if (!('data' in res)) {
+                    return;
+                }
+                this._updateWattToday(res.data);
+            }
         });
     }
 
-    private _getMetricsKWh(): void {
+    private _setupMetricsKWh(): void {
         const query =
             "sum_over_time(" +
             "(" +
@@ -104,22 +93,24 @@ export class MetricsComponent implements OnInit {
             ")[30d:1h])";
         const start = "2020-09-17T00:00:01.000Z";
         const end = "2020-09-17T23:59:59.000Z";
-        const url = "http://172.20.20.51:9090/api/v1";
-        const endpoint = `${url}/query?query=${query}`;
-        this._http.get<PrometheusReply>(endpoint)
-        .subscribe( (res: PrometheusReply) => {
-            console.debug(`prom result: `, res);
-            this._updateKWh(res.data);
+        const full_query = `query?query=${query}`;
+        this.observer_kwh = this._prom_svc.setQuery("kwh", full_query);
+        this.subscription_kwh = this.observer_kwh.subscribe({
+            next: (res: PrometheusReply) => {
+                console.debug("prom result: ", res);
+                if (!('data' in res)) {
+                    return;
+                }
+                this._updateKWh(res.data);
+            }
         });
     }
 
     private _getNameFromNode(nodestr: string): string {
         let node_name = nodestr;
         const t: string[] = node_name.split('-');
-        // console.debug(`node split name: `, t);
         if (t.length === 2) {
             const node_id: number = +(t[1]);
-            // console.debug(`attempt getting info for node ${node_id}`);
             if (this._node_svc.nodeExists(node_id)) {
                 const node = this._node_svc.getNodeById(node_id);
                 if (node.info.name && node.info.name !== "") {
@@ -161,10 +152,6 @@ export class MetricsComponent implements OnInit {
             };
             entry.values.forEach( (value: PrometheusMatrixResult) => {
                 const date = new Date(+value[0] * 1000);
-                // let series_name: string = " ";
-                // if (date.getMinutes() == 30 || date.getMinutes() == 0) {
-                // 	series_name = `${date.getHours()}h${date.getMinutes()}m`;
-                // }
                 let watt = +(value[1] as string);
                 watt = Math.round((watt + Number.EPSILON) * 100) / 100;
                 series_entry.series.push({
