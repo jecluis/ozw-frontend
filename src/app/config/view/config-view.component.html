@@ -16,7 +16,10 @@
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-stroked-button color="primary" type="submit" [disabled]="!configform.valid">Submit</button>        
+        <button mat-stroked-button color="primary" type="submit"
+        [disabled]="!configform.valid || isSettingConfig()">Submit</button>
+        <span *ngIf="showSettingError()">error: unable to set config</span>
+        <span *ngIf="showSettingSuccess()">succesfully set config</span>
       </mat-card-actions>
       </form>
 
