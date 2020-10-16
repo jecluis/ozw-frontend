@@ -1,0 +1,34 @@
+.grid-container {
+	margin: 20px;
+}
+  
+.metrics-card {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+}
+  
+.more-button {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+}
+  
+.metrics-card-content {
+	/*
+	display: flex;
+	flex-direction: row;
+	*/
+	text-align: justify;
+}
+  
+.metrics-form {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+}
+  

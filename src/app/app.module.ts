@@ -39,9 +39,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NetworkViewComponent } from './network/view/network-view.component';
 import { ConfigViewComponent, ConfigViewConfirmDialogComponent } from './config/view/config-view.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MetricsComponent } from './metrics/metrics.component';
+import { PerTimeSlotComponent } from './metrics/per-time-slot/per-time-slot.component';
 
 
 @NgModule({
@@ -60,6 +63,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     NetworkViewComponent,
     ConfigViewComponent,
     ConfigViewConfirmDialogComponent,
+    NetworkViewComponent,
+    MetricsComponent,
+    PerTimeSlotComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +97,12 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSlideToggleModule,
     NgxGraphModule,
     MatDialogModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatSlideToggleModule,
+    NgxGraphModule,
+    NgxChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

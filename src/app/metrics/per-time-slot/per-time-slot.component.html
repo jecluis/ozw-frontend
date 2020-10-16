@@ -1,0 +1,19 @@
+<mat-card class="metrics-card">
+  <h2>30 Days Consumption per time slot</h2>
+  <div style="position: absolute; left: 0; right: 0; top: 70px; bottom: 30px">
+  <ngx-charts-bar-vertical-stacked          
+    [legend]="false"
+    [results]="chart_data"
+    [gradient]="false"
+    [xAxis]="true"
+    [yAxis]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [xAxisLabel]="'Day'"
+    [yAxisLabel]="'kWh'"
+    [legend]="true"
+    [legendPosition]="'right'"
+  >
+  </ngx-charts-bar-vertical-stacked>
+</div>
+</mat-card>
