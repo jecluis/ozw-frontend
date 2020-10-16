@@ -52,6 +52,18 @@
               style="font-size: 20px;">topology</span>
         </a>
       </mat-list-item>
+      <mat-list-item>
+        <a mat-list-item routerLink="/config"
+            routerLinkActive="active"
+            aria-label="config">
+            <mat-icon
+              matTooltip="config"
+              style="padding: 3px;"
+            >settings</mat-icon>
+            <span *ngIf="isExpanded"
+              style="font-size: 20px;">config</span>
+        </a>
+      </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
