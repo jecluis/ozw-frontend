@@ -17,7 +17,9 @@ import { NodesTableDataSource } from './nodes-table-datasource';
 import {
     trigger, state, style, transition, animate
 } from '@angular/animations';
-import { NetworkService, NetworkState } from '../../network/service/network.service';
+import {
+    NetworkService, NetworkState
+} from '../../network/service/network.service';
 import { NodesService } from '../service/nodes-service.service';
 import { ValuesService } from '../service/values-service.service';
 import { NetworkValue } from 'src/app/types/Value';
@@ -72,9 +74,9 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
         this.network.getStateObserver()
         .subscribe({
-            next: (state: NetworkState) => {
-                if (state !== this.current_network_state) {
-                    this.current_network_state = state;
+            next: (_state: NetworkState) => {
+                if (_state !== this.current_network_state) {
+                    this.current_network_state = _state;
                 }
             }
         });
@@ -86,9 +88,7 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
         this.table.dataSource = this._data_source;
     }
 
-    details_n = 0;
-    show_details = false;
-    toggle_details(node: NetworkNode) {
+    toggle_details(node: NetworkNode): void {
         console.log("toggle details for node: ", node);
         this.selected_node.next(node);
     }
