@@ -176,6 +176,9 @@ export class PerTimeSlotComponent implements OnInit {
                     if (ts > last) { last = ts; }
                     let tdate = new Date(ts*1000);
                     let res = +(<string> results[1]);
+                    if (res < 0) {
+                        return;
+                    }
                     // console.log(`data point: ${tdate} = ${res}`);
                     sum += res/6; // 10 minute samples, each is 1/6th of kWh
                 });
