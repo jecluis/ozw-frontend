@@ -12,10 +12,12 @@
     </ng-container>
     
     <ng-container matColumnDef="locks">
-      <th mat-header-cell *matHeaderCellDef>Locked</th>
+      <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row">
-        <mat-icon *ngIf="isLocked(row)" (click)="doUnlock(row)">lock</mat-icon>
-        <mat-icon *ngIf="!isLocked(row)" (click)="doLock(row)">lock_open</mat-icon>
+        <ng-container *ngIf="!row.value.read_only">
+          <mat-icon *ngIf="isLocked(row)" (click)="doUnlock(row)">lock</mat-icon>
+          <mat-icon *ngIf="!isLocked(row)" (click)="doLock(row)">lock_open</mat-icon>
+        </ng-container>
       </td>
     </ng-container>
 
