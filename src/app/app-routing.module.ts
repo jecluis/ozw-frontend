@@ -8,13 +8,13 @@ import { MetricsComponent } from './metrics/metrics.component';
 
 
 const routes: Routes = [
-  { path: '', component: SettingsDashboardComponent },
+  { path: '', component: MetricsComponent },
   { path: 'nodes', component: NodesComponent },
   { path: 'network', component: SettingsDashboardComponent },
   { path: 'topology', component: NetworkViewComponent },
   { path: 'config', component: ConfigViewComponent },
   { path: 'metrics', component: MetricsComponent },
-  { path: '**', component: SettingsDashboardComponent }
+  { path: '**', component: MetricsComponent }
 ];
 
 @NgModule({

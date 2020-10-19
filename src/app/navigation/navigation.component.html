@@ -17,6 +17,18 @@
     </mat-toolbar>
     <mat-nav-list>
       <mat-list-item>
+        <a mat-list-item routerLink="/metrics"
+            routerLinkActive="active"
+            aria-label="metrics">
+            <mat-icon
+              matTooltip="metrics"
+              style="padding: 3px;"
+            >data_usage</mat-icon>
+            <span *ngIf="isExpanded"
+              style="font-size: 20px;">metrics</span>
+        </a>
+      </mat-list-item>      
+      <mat-list-item>
         <a mat-list-item routerLink="/nodes"
             routerLinkActive="active"
             aria-label="nodes">
@@ -64,18 +76,7 @@
               style="font-size: 20px;">config</span>
         </a>
       </mat-list-item>
-      <mat-list-item>
-        <a mat-list-item routerLink="/metrics"
-            routerLinkActive="active"
-            aria-label="metrics">
-            <mat-icon
-              matTooltip="metrics"
-              style="padding: 3px;"
-            >data_usage</mat-icon>
-            <span *ngIf="isExpanded"
-              style="font-size: 20px;">metrics</span>
-        </a>
-      </mat-list-item>
+      
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
