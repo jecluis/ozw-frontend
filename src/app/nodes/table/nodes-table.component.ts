@@ -142,12 +142,14 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
             time_lst.push(`${mins}m`);
         }
 
-        if (time_lst.length === 0 && diff > 0) {
-            time_lst.push("about a minute ago");
+        if (time_lst.length === 0) {
+            if (diff > 0) {
+                return "about a minute ago";
+            } else {
+                return "a few seconds ago";
+            }
         }
-
-        const str: string = `${time_lst.join(', ')} ago`;
-        return str;
+        return `${time_lst.join(', ')} ago`;
     }
 
 
