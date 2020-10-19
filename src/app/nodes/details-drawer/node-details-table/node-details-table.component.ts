@@ -61,6 +61,9 @@ export class NodeDetailsTableComponent
                     valuectrl: fc
                 });
                 fc.setValue(value.value.value);
+                if (this.isDisabled(value)) {
+                    fc.disable();
+                }
             });
         });
     }
