@@ -30,7 +30,8 @@
           <span style="margin-left: 10px">{{row.value.units}}</span>
         </div>
 
-        <ng-template #readWrite [ngSwitch]="row.value.type">
+        <ng-template #readWrite>
+          <ng-container [ngSwitch]="row.value.type">
           <div *ngSwitchDefault
             fxLayout="column" fxLayoutAlign="space-between start">
             <span>{{row.value.value}}</span>
@@ -40,8 +41,8 @@
           <ng-container *ngSwitchCase="'list'">
             <form [formGroup]="form_groups[row.value.value_id]"
                   (ngSubmit)="onSubmit(row)">
-              <mat-form-field appearance="fill"
-                    placeholder="{{row.value.value}}">
+              <mat-form-field appearance="fill">
+                    <!-- placeholder="{{row.value.value}}"> -->
                     <mat-select formControlName="valuectrl">
                   <mat-option *ngFor="let v of row.value.values" [value]="v" >
                     {{v}}
@@ -110,6 +111,7 @@
           <ng-container *ngSwitchCase="'button'">
             <button mat-raised-button [disabled]="true">{{row.value.label}}</button>
           </ng-container>
+        </ng-container>
         </ng-template>
       </td>
     </ng-container>
