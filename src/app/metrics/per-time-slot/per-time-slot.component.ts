@@ -119,38 +119,40 @@ export class PerTimeSlotComponent implements OnInit {
         this._slots_updated_subscription.unsubscribe();
         this._slots_updated_subscription = undefined;
 
-        let chart: LineSeriesEntry[] = [];
-        for (let day in this.kWh_per_day_map) {
-            let series_entry: LineSeriesEntry = {
+        const chart: LineSeriesEntry[] = [];
+
+        Object.keys(this.kWh_per_day_map).forEach( (day: string) => {
+            const series_entry: LineSeriesEntry = {
                 name: day,
                 series: []
             };
-            for (let slot in this.kWh_per_day_map[day]) {
-                let kwh: number = this.kWh_per_day_map[day][slot];
-                let chartvalue: ChartValue = {
+
+            Object.keys(this.kWh_per_day_map[day]).forEach( (slot: string) => {
+                const kwh: number = this.kWh_per_day_map[day][slot];
+                const chartvalue: ChartValue = {
                     name: slot,
                     value: kwh,
                     tooltipText: `${kwh} kWh`
-                }
+                };
                 series_entry.series.push(chartvalue);
-            }
+            });
+
             if (series_entry.series.length > 0) {
                 chart.push(series_entry);
 
                 let total_cost: number = 0;
                 series_entry.series.forEach( (v: ChartValue) => {
-                    total_cost += this._round(v.value*this.cost[v.name]);
+                    total_cost += this._round(v.value * this.cost[v.name]);
                 });
                 console.log(`total cost ${day}: ${total_cost}`);
             }
-        }
-
+        });
         this.chart_data = [...chart];
         this._subscribeUpdates();
     }
 
     private _round(value: number): number {
-        return Math.round((value + Number.EPSILON) * 100)/100;
+        return Math.round((value + Number.EPSILON) * 100) / 100;
     }
 
     private _obtainSlot(
