@@ -212,10 +212,10 @@ export class PerTimeSlotComponent implements OnInit {
         const now = new Date();
         const today = now.getDate();
 
-        for (let day = 1; day <= today; day++) {
+        for (let day = now.getDate(); day >= -14; day--) {
             const date = new Date();
             date.setDate(day);
-            const month_day_str = `${date.getMonth() + 1}/${day}`;
+            const month_day_str = `${date.getMonth() + 1}/${date.getDate()}`;
             this.kWh_per_day_map[month_day_str] = {};
 
             this.slots.forEach( (slot: Slot) => {

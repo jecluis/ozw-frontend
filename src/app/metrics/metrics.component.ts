@@ -41,6 +41,7 @@ export class MetricsComponent implements OnInit {
     public _has_prometheus: boolean = false;
 
     private observer_kwh: BehaviorSubject<PrometheusReply>;
+    private observer_kwh2: BehaviorSubject<PrometheusReply>;
     private observer_watt_today: BehaviorSubject<PrometheusReply>;
     private subscription_kwh: Subscription;
     private subscription_watt_today: Subscription;
@@ -91,8 +92,6 @@ export class MetricsComponent implements OnInit {
                 "(sum_over_time(home_energy_consumption_W[30d:10m])/1000)/" +
                 "count_over_time(home_energy_consumption_W[30d:10m])" +
             ")[30d:1h])";
-        const start = "2020-09-17T00:00:01.000Z";
-        const end = "2020-09-17T23:59:59.000Z";
         const full_query = `query?query=${query}`;
         this.observer_kwh = this._prom_svc.setQuery("kwh", full_query);
         this.subscription_kwh = this.observer_kwh.subscribe({
@@ -101,9 +100,49 @@ export class MetricsComponent implements OnInit {
                 if (!('data' in res)) {
                     return;
                 }
-                this._updateKWh(res.data);
+                // this._updateKWh(res.data);
             }
         });
+
+        const start_date = new Date();
+        start_date.setDate(-30);
+        const end_date = new Date();
+        const start = start_date.toISOString();
+        const end = end_date.toISOString();
+        const query2 = `query_range?query=home_energy_consumption_W&start=${start}&end=${end}&step=10m`;
+        this.observer_kwh2 = this._prom_svc.setQuery("kwh2", query2);
+        this.observer_kwh2.subscribe({
+            next: (res: PrometheusReply) => {
+                if (!('data' in res)) {
+                    return;
+                }
+                console.debug("prom kwh2 result: ", res);
+                const result = res.data.result as PrometheusMatrixReplyResult[];
+                const entries: {[id: string]: ChartValue} = {};
+                result.forEach( (entry: PrometheusMatrixReplyResult) => {
+                    let agg: number = 0;
+                    let npoints: number = 0;
+                    entry.values.forEach( (point: PrometheusMatrixResult) => {
+                        const point_val: number = +(point[1] as string);
+                        if (point_val <= 0) {
+                            return;
+                        }
+                        agg += (point_val / 6);
+                        npoints++;
+                    });
+                    const n_kWh: number = (agg / 1000);
+                    console.log(`kwh2 > ${entry.metric.node} > agg: ${n_kWh} kwh`);
+                    const n: string = this._getNameFromNode(entry.metric.node);
+                    entries[n] = { name: n, value: n_kWh};
+                });
+                const piechart: ChartValue[] = [];
+                Object.keys(entries).sort().forEach( (k: string) => {
+                    piechart.push(entries[k]);
+                });
+                this.kWh = [...piechart];
+            }
+        });
+
     }
 
     private _getNameFromNode(nodestr: string): string {
