@@ -132,7 +132,7 @@
           [attr.colspan]="displayedColumns.length">
         <div class="expanded-node-detail"
             [@detailExpand]="isExpandedDetails(node) ? 'expanded' : 'collapsed'">
-          FOO BAR BAZ
+          <app-meter-details [node]="node"></app-meter-details>
         </div>
       </td>
     </ng-container>
