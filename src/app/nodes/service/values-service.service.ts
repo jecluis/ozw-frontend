@@ -12,7 +12,7 @@ import { BehaviorSubject, merge, interval } from 'rxjs';
 import { NetworkValue, APIValueSetRequest } from '../../types/Value';
 import { catchError } from 'rxjs/operators';
 import { NodesService } from './nodes-service.service';
-import { NetworkNode } from '../table/nodes-table-datasource';
+import { NetworkNode } from '../../types/Node';
 
 export interface ScopeValues {
 	scope: string;

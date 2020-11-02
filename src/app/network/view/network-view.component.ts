@@ -9,8 +9,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, BehaviorSubject, Subscription } from 'rxjs';
 import { Edge, Node as NgxNode } from '@swimlane/ngx-graph';
-import { NetworkNode } from 'src/app/nodes/table/nodes-table-datasource';
-import { NodesService, NodeNeighbors } from 'src/app/nodes/service/nodes-service.service';
+import { NetworkNode } from '../../types/Node';
+import { NodesService, NodeNeighbors } from '../../nodes/service/nodes-service.service';
 
 @Component({
   selector: 'app-network-view',

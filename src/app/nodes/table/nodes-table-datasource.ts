@@ -12,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { Observable, merge, BehaviorSubject } from 'rxjs';
 import { NodesService } from '../service/nodes-service.service';
-import { NetworkNode } from 'src/app/types/Node';
+import { NetworkNode } from '../../types/Node';
 
 
 
