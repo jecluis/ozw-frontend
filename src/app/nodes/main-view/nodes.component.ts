@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { NodesTableComponent } from '../table/nodes-table.component';
-import { NetworkNode } from '../table/nodes-table-datasource';
+import { NetworkNode } from '../../types/Node';
 import { NetworkService } from '../../network/service/network.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NodesService } from '../service/nodes-service.service';

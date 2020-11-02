@@ -45,6 +45,7 @@ import { ConfigViewComponent, ConfigViewConfirmDialogComponent } from './config/
 import { MatDialogModule } from '@angular/material/dialog';
 import { MetricsComponent } from './metrics/metrics.component';
 import { PerTimeSlotComponent } from './metrics/per-time-slot/per-time-slot.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { PerTimeSlotComponent } from './metrics/per-time-slot/per-time-slot.comp
     MatSlideToggleModule,
     NgxGraphModule,
     NgxChartsModule,
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -53,7 +53,8 @@
       </span>
     </mat-toolbar>
     <app-nodes-table *ngIf="isNetworkAvailable()"
-      (selected_node)="open_node_details($event)">
+      (selected_node)="open_node_details($event)"
+      [expanded_info]="is_drawer_open">
     </app-nodes-table>
     <!-- Add Content Here -->
   </mat-sidenav-content>

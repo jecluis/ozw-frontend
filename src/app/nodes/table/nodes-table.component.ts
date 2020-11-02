@@ -8,7 +8,8 @@
  */
 import {
     AfterViewInit, Component, OnInit, ViewChild, Output, EventEmitter,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    Input
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -51,11 +52,13 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
      */
     displayedColumns = [
         'id', 'product', 'name', 'type', 'state', 'capabilities',
-        'lastseen', 'switch', 'metering', 'insights'
+        'lastseen', 'switch', 'metering', 'info'
     ];
     expandedNode: NetworkNode | null;
+    expand_node: boolean = false;
 
     @Output() selected_node = new EventEmitter<NetworkNode>();
+    @Input() expanded_info = false;
 
     current_network_state: string = 'unknown';
 
@@ -88,9 +91,31 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
         this.table.dataSource = this._data_source;
     }
 
-    toggle_details(node: NetworkNode): void {
-        console.log("toggle details for node: ", node);
+    toggle_info(node: NetworkNode): void {
+        console.log("toggle info for node: ", node);
         this.selected_node.next(node);
+    }
+
+    toggle_details(node: NetworkNode): void {
+        console.log("toggle details for node:", node);
+        if (this.expanded_info) {
+            console.log("  don't expand!");
+            return;
+        }
+
+        this.expand_node = (!!node && node !== this.expandedNode);
+        this.expandedNode = (!!node && this.expand_node ? node : null);
+    }
+
+    isExpandedDetails(node: NetworkNode): boolean {
+        const r = this.expand_node && this.expandedNode === node &&
+               !this.expanded_info;
+        console.log("expanded details: ", r);
+        if (!r) {
+            console.log("expand node: ", this.expand_node, ", expanded:",
+                        this.expandedNode, ", more: ", this.expanded_info);
+        }
+        return r;
     }
 
 
