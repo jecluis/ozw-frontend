@@ -3,17 +3,6 @@
 <mat-tab-group dynamicHeight mat-align-tabs="center">
     <mat-tab>
         <ng-template mat-tab-label>
-            <label matTooltip="network operations">
-                <mat-icon>build</mat-icon>
-            </label>
-        </ng-template>
-        <app-controller-operations *ngIf="node_is_controller === true">
-        </app-controller-operations>
-        <app-node-operations *ngIf="node_is_controller !== true">
-        </app-node-operations>
-    </mat-tab>
-    <mat-tab>
-        <ng-template mat-tab-label>
             <mat-icon matTooltip="node information">info</mat-icon>
         </ng-template>
         <app-node-details-table
@@ -32,6 +21,17 @@
         </ng-template>
         <app-node-details-table
             scope="system" [node_id]="node_id"></app-node-details-table>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+          <label matTooltip="network operations">
+              <mat-icon>build</mat-icon>
+          </label>
+      </ng-template>
+      <app-controller-operations *ngIf="node_is_controller === true">
+      </app-controller-operations>
+      <app-node-operations *ngIf="node_is_controller !== true">
+      </app-node-operations>
     </mat-tab>
 </mat-tab-group>
 <!--
