@@ -11,10 +11,12 @@
     >
     <mat-toolbar>
       <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="isExpanded = !isExpanded">
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          matTooltip="Menu"
+          [matTooltipDisabled]="isExpanded"
+          (click)="isExpanded = !isExpanded">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span *ngIf="isExpanded"
@@ -23,60 +25,55 @@
     <mat-nav-list>
       <mat-list-item>
         <a mat-list-item routerLink="/metrics"
-            routerLinkActive="active"
-            aria-label="metrics">
-            <mat-icon
+              routerLinkActive="active"
+              aria-label="metrics"
               matTooltip="metrics"
-              style="padding: 3px;"
-            >data_usage</mat-icon>
+              [matTooltipDisabled]="isExpanded">
+            <mat-icon style="padding: 3px;">data_usage</mat-icon>
             <span *ngIf="isExpanded"
               style="font-size: 20px;">metrics</span>
         </a>
       </mat-list-item>      
       <mat-list-item>
         <a mat-list-item routerLink="/nodes"
-            routerLinkActive="active"
-            aria-label="nodes">
-            <mat-icon
-            matTooltip="network nodes"
-            style="padding: 3px;"
-            >devices</mat-icon>
+              routerLinkActive="active"
+              aria-label="nodes"            
+              matTooltip="network nodes"
+              [matTooltipDisabled]="isExpanded">
+            <mat-icon style="padding: 3px;">devices</mat-icon>
             <span *ngIf="isExpanded"
             style="font-size: 20px;">nodes</span>
           </a>
       </mat-list-item>
       <mat-list-item>
         <a mat-list-item routerLink="/network"
-            routerLinkActive="active"
-            aria-label="network">
-            <mat-icon
-            matTooltip="network"
-            style="padding: 3px;"
-            >router</mat-icon>
+              routerLinkActive="active"
+              aria-label="network"
+              matTooltip="network"
+              [matTooltipDisabled]="isExpanded">
+            <mat-icon style="padding: 3px;">router</mat-icon>
             <span *ngIf="isExpanded"
             style="font-size: 20px;">network</span>
         </a>
       </mat-list-item>
       <mat-list-item>
         <a mat-list-item routerLink="/topology"
-            routerLinkActive="active"
-            aria-label="topology">
-            <mat-icon
+              routerLinkActive="active"
+              aria-label="topology"
               matTooltip="topology"
-              style="padding: 3px;"
-            >device_hub</mat-icon>
+              [matTooltipDisabled]="isExpanded">
+            <mat-icon style="padding: 3px;">device_hub</mat-icon>
             <span *ngIf="isExpanded"
               style="font-size: 20px;">topology</span>
         </a>
       </mat-list-item>
       <mat-list-item>
         <a mat-list-item routerLink="/config"
-            routerLinkActive="active"
-            aria-label="config">
-            <mat-icon
+              routerLinkActive="active"
+              aria-label="config"
               matTooltip="config"
-              style="padding: 3px;"
-            >settings</mat-icon>
+              [matTooltipDisabled]="isExpanded">
+            <mat-icon style="padding: 3px;">settings</mat-icon>
             <span *ngIf="isExpanded"
               style="font-size: 20px;">config</span>
         </a>
