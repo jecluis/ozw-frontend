@@ -1,7 +1,24 @@
 <div>
-  <div fxLayout="column">
-    <span>Watt: {{getWatts()}}</span>
-    <span>Volt: {{getVolts()}}</span>
-    <span>Amps: {{getAmps()}}</span>
+  <div fxLayout="row">
+    <div style="width: 20px"></div>
+    <mat-icon style="font-size: 40px">flash_on</mat-icon>
+    <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px">
+      <div></div>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <span>Power</span>
+        <span>{{getWatts()}} Watt</span>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <span>Voltage</span>
+        <span>{{getVolts()}} Volt</span>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <span>Current</span>
+        <span>{{getAmps()}} Ampere</span>
+      </div>
+      <mat-divider [vertical]="true"></mat-divider>
+    </div>
   </div>
 </div>
