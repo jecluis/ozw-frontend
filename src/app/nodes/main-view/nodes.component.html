@@ -42,20 +42,24 @@
     </app-node-details-tab>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-      <span class="mat-h1 toolbar-heading">Nodes</span>
-      <span *ngIf="!isNetworkAvailable()">Please
-        <a routerLink="/settings" routerLinkActive="active">Start</a>
-        the Network
-      </span>
-      <span class="toolbar-heading">
-        < network: <strong>{{network_state | uppercase }}</strong> >
-      </span>
-    </mat-toolbar>
-    <app-nodes-table *ngIf="isNetworkAvailable()"
-      (selected_node)="open_node_details($event)"
-      [expanded_info]="is_drawer_open">
-    </app-nodes-table>
+    <div class="container">
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <h1 class="mat-h1">Nodes</h1>
+        <h1 class="mat-h1">({{network_state | uppercase }})</h1>
+      </div>    
+      <mat-card *ngIf="!isNetworkAvailable()">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <h2 class="mat-h2">Network is not available</h2>
+          <h3 class="mat-h3">Please <a routerLink="/settings"
+          routerLinkActive="active">Start</a> the Network.
+          </h3>
+        </div>
+      </mat-card>
+      <app-nodes-table *ngIf="isNetworkAvailable()"
+        (selected_node)="open_node_details($event)"
+        [expanded_info]="is_drawer_open">
+      </app-nodes-table>
     <!-- Add Content Here -->
+  </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
