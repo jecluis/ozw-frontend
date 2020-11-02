@@ -103,6 +103,10 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
             return;
         }
 
+        if (!this.isExpandable(node)) {
+            return;
+        }
+
         this.expand_node = (!!node && node !== this.expandedNode);
         this.expandedNode = (!!node && this.expand_node ? node : null);
     }
@@ -116,6 +120,10 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
                         this.expandedNode, ", more: ", this.expanded_info);
         }
         return r;
+    }
+
+    isExpandable(node: NetworkNode): boolean {
+        return node.type.is_meter || node.type.is_switch;
     }
 
 
