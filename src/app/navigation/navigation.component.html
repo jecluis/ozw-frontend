@@ -4,6 +4,11 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="'side'"
       [opened]="true">
+    <div
+      fxLayout="column"
+      fxLayoutAlign="space-between"
+      style="height: 100vh"
+    >
     <mat-toolbar>
       <button
         type="button"
@@ -76,8 +81,15 @@
               style="font-size: 20px;">config</span>
         </a>
       </mat-list-item>
-      
     </mat-nav-list>
+    <span style="height: calc(100vh - 248px - 24px)"></span>
+    <div style="padding: 10px" fxLayout="row" fxLayoutAlign="start center">
+      <a href="https://github.com/jecluis/ozw-frontend" target="new">
+        <mat-icon svgIcon="github" style="padding: 3px"></mat-icon>
+        <span *ngIf="isExpanded" style="font-size: 20px">github</span>
+      </a>
+    </div>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
