@@ -9,7 +9,8 @@
 import {
     AfterViewInit, Component, OnInit, ViewChild, Output, EventEmitter,
     ChangeDetectionStrategy,
-    Input
+    Input,
+    OnChanges
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -41,7 +42,7 @@ import { NetworkNode, NetworkNodeStateEnum } from 'src/app/types/Node';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NodesTableComponent implements AfterViewInit, OnInit {
+export class NodesTableComponent implements AfterViewInit, OnInit, OnChanges {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatTable) table: MatTable<NetworkNode>;
@@ -59,6 +60,7 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
 
     @Output() selected_node = new EventEmitter<NetworkNode>();
     @Input() expanded_info = false;
+    @Input() node_type: string = "all";
 
     current_network_state: string = 'unknown';
 
@@ -67,13 +69,17 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
     private _switch_state:
         {[id: number]: BehaviorSubject<boolean|undefined>} = {};
 
+    private node_type_filter_subject: BehaviorSubject<string> =
+        new BehaviorSubject<string>("all");
+
     constructor(
         private _nodes_svc: NodesService,
         private _values_svc: ValuesService,
         private network: NetworkService) { }
 
     ngOnInit(): void {
-        this._data_source = new NodesTableDataSource(this._nodes_svc);
+        this._data_source = new NodesTableDataSource(
+            this._nodes_svc, this.node_type_filter_subject);
 
         this.network.getStateObserver()
         .subscribe({
@@ -89,6 +95,11 @@ export class NodesTableComponent implements AfterViewInit, OnInit {
         this._data_source._sort = this.sort;
         this._data_source._paginator = this.paginator;
         this.table.dataSource = this._data_source;
+    }
+
+    public ngOnChanges(): void {
+        console.log("nodes-table > select ", this.node_type);
+        this.node_type_filter_subject.next(this.node_type);
     }
 
     toggle_info(node: NetworkNode): void {

@@ -7,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeviceListComponent implements OnInit {
 
-  constructor() { }
+    public device_type: string = "all";
 
-  ngOnInit(): void {
-  }
+    constructor() { }
+
+    ngOnInit(): void {
+    }
 
 }

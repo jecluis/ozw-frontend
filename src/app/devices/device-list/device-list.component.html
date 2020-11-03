@@ -12,23 +12,23 @@
       </mat-toolbar>
 
       <mat-nav-list>
-        <mat-list-item>
+        <mat-list-item (click)="device_type = 'all'">
           All
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item (click)="device_type = 'switch'">
           Switches
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item (click)="device_type = 'meter'">
           Meters
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item (click)="device_type = 'sensor'">
           Sensors
         </mat-list-item>
       </mat-nav-list>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-nodes-table></app-nodes-table>
+    <app-nodes-table [node_type]="device_type"></app-nodes-table>
   </mat-sidenav-content>
 </mat-sidenav-container>
 </div>

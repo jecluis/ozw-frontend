@@ -38,9 +38,35 @@ export class NodesTableDataSource extends DataSource<NetworkNode> {
     public _sort: MatSort;
     public _nodes_data: NetworkNode[] = [];
     private _nodes_subject = new BehaviorSubject<NetworkNode[]>([]);
+    private _filtered_nodes_subject = new BehaviorSubject<NetworkNode[]>([]);
+    private _filtered_nodes: NetworkNode[] = [];
+    private _filter_node_type: string = "all";
 
-    constructor(private _node_svc: NodesService) {
+    constructor(
+        private _node_svc: NodesService,
+        private _node_type_subject: BehaviorSubject<string>) {
         super();
+    }
+
+    private _updateNodes(): void {
+        console.log("nodes-table-ds > filter: ", this._filter_node_type);
+        const filtered: NetworkNode[] = [];
+        this._nodes_data.forEach( (node: NetworkNode) => {
+            if (this._filter_node_type === "all") {
+                filtered.push(node);
+                console.log("nodes-table-ds > push node ", node);
+            } else {
+                if (this._filter_node_type === "switch" &&
+                    node.type.is_switch) {
+                    filtered.push(node);
+                } else if (this._filter_node_type === "meter" &&
+                           node.type.is_meter) {
+                    filtered.push(node);
+                }
+            }
+        });
+        console.log("nodes-table-ds > filtered: ", filtered);
+        this._filtered_nodes_subject.next(filtered);
     }
 
     /**
@@ -54,16 +80,29 @@ export class NodesTableDataSource extends DataSource<NetworkNode> {
         this._nodes_subject = this._node_svc.getNodes();
         this._nodes_subject.subscribe( (nodes: NetworkNode[]) => {
             this._nodes_data = nodes;
+            this._updateNodes();
+        });
+        this._node_type_subject.subscribe({
+            next: (node_type: string) => {
+                console.log("nodes-table-ds > change filter: ", node_type);
+                this._filter_node_type = node_type;
+                this._updateNodes();
+            }
+        });
+        this._filtered_nodes_subject.subscribe({
+            next: (nodes: NetworkNode[]) => {
+                this._filtered_nodes = nodes;
+            }
         });
 
         const dataMutations = [
-            this._nodes_subject,
+            this._filtered_nodes_subject,
             this._paginator.page,
             this._sort.sortChange
         ];
 
         return merge(...dataMutations).pipe(map(() => {
-            return this.getPagedData(this.getSortedData([...this._nodes_data]));
+            return this.getPagedData(this.getSortedData([...this._filtered_nodes]));
         }));
     }
 
