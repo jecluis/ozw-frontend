@@ -47,6 +47,7 @@ import { MetricsComponent } from './metrics/metrics.component';
 import { PerTimeSlotComponent } from './metrics/per-time-slot/per-time-slot.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MeterDetailsComponent } from './nodes/meter-details/meter-details.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { MeterDetailsComponent } from './nodes/meter-details/meter-details.compo
     MetricsComponent,
     PerTimeSlotComponent,
     MeterDetailsComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

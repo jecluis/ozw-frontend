@@ -1,0 +1,96 @@
+<mat-sidenav-container class="sidenav-container" autosize>
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <div fxLayout="column" fxLayoutAlign="space-between" class="sidenav-menu">
+      <!-- sidenav toolbar / header-->
+      <mat-toolbar>
+        <button
+            class="menu-header-button"
+            type="button"
+            aria-label="Expand sidebar menu"
+            mat-icon-button
+            (click)="toggleMenu()"
+            *ngIf="!(isHandset$ | async)">
+          <mat-icon [matTooltipDisabled]="isExpanded()"
+              matTooltip="Menu" matTooltipPosition="right">
+            menu
+          </mat-icon>
+        </button>
+        <span *ngIf="isExpanded()" [class.expanded-sidenav]="isExpanded()">
+          Menu
+        </span>
+      </mat-toolbar>
+
+      <!-- menu items -->
+      <mat-nav-list>
+        <a mat-list-item routerLink="/metrics" routerLinkActive="active"
+            [matTooltipDisabled]="isExpanded()" matTooltip="Metrics"
+            matTooltipPosition="right">
+          <mat-icon>data_usage</mat-icon>
+          <span class="menu-item" *ngIf="isExpanded()">Metrics</span>
+        </a>
+        <a mat-list-item routerLink="/nodes" routerLinkActive="active"
+            [matTooltipDisabled]="isExpanded()" matTooltip="Network Nodes"
+            matTooltipPosition="right">
+          <mat-icon>devices</mat-icon>
+          <span class="menu-item" *ngIf="isExpanded()">Nodes</span>
+        </a>
+        <a mat-list-item routerLink="/network" routerLinkActive="active"
+            [matTooltipDisabled]="isExpanded()" matTooltip="Network"
+            matTooltipPosition="right">
+          <mat-icon>router</mat-icon>
+          <span class="menu-item" *ngIf="isExpanded()">Network</span>
+        </a>
+        <a mat-list-item routerLink="/topology" routerLinkActive="active"
+            [matTooltipDisabled]="isExpanded()" matTooltip="Topology"
+            matTooltipPosition="right">
+          <mat-icon>device_hub</mat-icon>
+          <span class="menu-item" *ngIf="isExpanded()">Topology</span>
+        </a>
+        <a mat-list-item routerLink="/config" routerLinkActive="active"
+            [matTooltipDisabled]="isExpanded()" matTooltip="Config"
+            matTooltipPosition="right">
+          <mat-icon>settings</mat-icon>
+          <span class="menu-item" *ngIf="isExpanded()">Config</span>
+        </a>
+      </mat-nav-list>
+      <!-- spacer -->
+      <span class="sidenav-menu-spacer"></span>
+      <div> <!-- bottom menu div -->
+        <mat-divider></mat-divider>
+        <!-- bottom menu -->
+        <!--
+        <mat-toolbar>
+        </mat-toolbar>
+        -->
+        <mat-nav-list>
+          <a mat-list-item
+              href="https://github.com/jecluis/ozw-frontend"
+              target="new"
+              [matTooltipDisabled]="isExpanded()" matTooltip="homepage"
+              matTooltipPosition="right">
+            <mat-icon svgIcon="github" ></mat-icon>
+            <span *ngIf="isExpanded()" class="menu-item">github</span>
+          </a>
+        </mat-nav-list>
+      </div> <!-- /bottom menu div -->
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>wip:wd Dashboard</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
