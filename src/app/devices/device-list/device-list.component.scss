@@ -2,13 +2,16 @@
     height: calc(100vh - 64px);
 }
 
-.sidenav {
-    // top: 0;
-    // bottom: 0;
-    // height: calc(100vh - 64px);
+.container {
+	margin: 20px;
 }
 
-// .sidenav.mat-drawer {
-//     top: unset;
-//     bottom: unset;
-// }
+.sidenav.mat-drawer {
+    top: unset;
+    bottom: unset;
+    height: 100%;
+}
+
+.menu-item {
+    padding-left: 5px;
+}

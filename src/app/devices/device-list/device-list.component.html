@@ -1,34 +1,31 @@
 <div>
-<mat-sidenav-container class="sidenav-container" autosize>
-  <mat-sidenav
-      [attr.role]="'navigation'"
-      [mode]="'side'"
-      [opened]="true"
-      class="sidenav">
-    <div fxLayout="column" fxLayoutAlign="space-between" class="sidenav-menu">
-
-      <mat-toolbar>
-        <span>Devices</span>
-      </mat-toolbar>
-
-      <mat-nav-list>
-        <mat-list-item (click)="device_type = 'all'">
-          All
-        </mat-list-item>
-        <mat-list-item (click)="device_type = 'switch'">
-          Switches
-        </mat-list-item>
-        <mat-list-item (click)="device_type = 'meter'">
-          Meters
-        </mat-list-item>
-        <mat-list-item (click)="device_type = 'sensor'">
-          Sensors
-        </mat-list-item>
-      </mat-nav-list>
-    </div>
-  </mat-sidenav>
+<mat-sidenav-container class="sidenav-container" autosize>  
   <mat-sidenav-content>
-    <app-nodes-table [node_type]="device_type"></app-nodes-table>
+    <div fxLayout="column">
+      <mat-toolbar>
+        <span *ngIf="!(isHandset$ | async)">Devices</span>
+        <mat-nav-list fxLayout="row">
+          <mat-list-item (click)="device_type = 'all'">
+            <span class="menu-item">All</span>
+          </mat-list-item>
+          <mat-list-item (click)="device_type = 'switch'">
+            <span class="menu-item" *ngIf="!(isHandset$|async)">Switches</span>
+            <mat-icon *ngIf="(isHandset$|async)">outlet</mat-icon>
+          </mat-list-item>
+          <mat-list-item (click)="device_type = 'meter'">
+            <span class="menu-item" *ngIf="!(isHandset$|async)">Meters</span>
+            <mat-icon *ngIf="(isHandset$|async)">data_usage</mat-icon>
+          </mat-list-item>
+          <mat-list-item (click)="device_type = 'sensor'">
+            <span class="menu-item" *ngIf="!(isHandset$|async)">Sensors</span>
+            <mat-icon *ngIf="(isHandset$|async)">group_work</mat-icon>
+          </mat-list-item>
+        </mat-nav-list>
+      </mat-toolbar>
+    </div>
+    <div class="container">
+      <app-nodes-table [node_type]="device_type"></app-nodes-table>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 </div>
