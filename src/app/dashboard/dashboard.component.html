@@ -55,6 +55,12 @@
           <mat-icon>settings</mat-icon>
           <span class="menu-item" *ngIf="isExpanded()">Config</span>
         </a>
+        <a mat-list-item routerLink="/devices" routerLinkActive="active"
+            [matTooltipDisabled]="isExpanded()" matTooltip="Device List"
+            matTooltipPosition="right">
+          <mat-icon>dns</mat-icon>
+          <span class="menu-item" *ngIf="isExpanded()">Devices</span>
+        </a>
       </mat-nav-list>
       <!-- spacer -->
       <span class="sidenav-menu-spacer"></span>
