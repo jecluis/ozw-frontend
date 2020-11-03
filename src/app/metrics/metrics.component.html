@@ -1,8 +1,9 @@
 <div class="grid-container">
   <h1 class="mat-h1">Metrics</h1>
-  <mat-grid-list cols="4" rowHeight="150px">
+  <mat-grid-list [cols]="layout.cols" rowHeight="150px">
 
-     <mat-grid-tile colspan="2" rowspan="3">
+     <mat-grid-tile [colspan]="layout.cards.daily_watt.cols"
+                    [rowspan]="layout.cards.daily_watt.rows">
       <mat-card class="metrics-card">
         <h2>Energy Consumption Today</h2>
         <mat-card-content>
@@ -35,7 +36,8 @@
       </mat-card>
      </mat-grid-tile>
 
-    <mat-grid-tile colspan="1" rowspan="3">
+    <mat-grid-tile [colspan]="layout.cards.last_30d_kwh.cols"
+                   [rowspan]="layout.cards.last_30d_kwh.rows">
       <mat-card class="metrics-card">
         <h2>30 Days Consumption</h2>
         <div style="position: absolute; left: 0; right: 0; top: 70px; bottom: 30px">
@@ -51,7 +53,8 @@
       </mat-card>
     </mat-grid-tile>
     
-    <mat-grid-tile colspan="1" rowspan="3">
+    <mat-grid-tile [colspan]="layout.cards.last_30d_slots.cols"
+                   [rowspan]="layout.cards.last_30d_slots.rows">
       <app-metrics-per-time-slot></app-metrics-per-time-slot>      
     </mat-grid-tile>
 

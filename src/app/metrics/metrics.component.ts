@@ -18,8 +18,29 @@ import {
     PrometheusReply
 } from './types';
 import { NodesService } from '../nodes/service/nodes-service.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { PrometheusService } from './prometheus.service';
+import { map, shareReplay } from 'rxjs/operators';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
+
+interface LayoutConfig {
+    cols: number;
+    cards: {
+        daily_watt: {
+            cols: number;
+            rows: number;
+        },
+        last_30d_kwh: {
+            cols: number;
+            rows: number;
+        },
+        last_30d_slots: {
+            cols: number;
+            rows: number;
+        }
+    };
+}
 
 
 @Component({
@@ -28,6 +49,18 @@ import { PrometheusService } from './prometheus.service';
   styleUrls: ['./metrics.component.scss']
 })
 export class MetricsComponent implements OnInit {
+
+    public isHandset$: Observable<boolean> =
+        this.breakpointObserver.observe([
+            Breakpoints.Handset,
+            Breakpoints.Tablet,
+            Breakpoints.Medium,
+            Breakpoints.Small
+    ])
+    .pipe(
+        map(result => result.matches),
+        shareReplay()
+    );
 
     public kWh: ChartValue[] = [];
     public kWh_max: number = 0;
@@ -40,6 +73,24 @@ export class MetricsComponent implements OnInit {
     public _url: string;
     public _has_prometheus: boolean = false;
 
+    private _layout_handset: LayoutConfig = {
+        cols: 1,
+        cards: {
+            daily_watt: { cols: 1, rows: 3 },
+            last_30d_kwh: { cols: 1, rows: 3},
+            last_30d_slots: { cols: 1, rows: 3}
+        }
+    };
+    private _layout_regular: LayoutConfig = {
+        cols: 4,
+        cards: {
+            daily_watt: { cols: 2, rows: 3 },
+            last_30d_kwh: { cols: 1, rows: 3 },
+            last_30d_slots: { cols: 1, rows: 3}
+        }
+    };
+    public layout: LayoutConfig = this._layout_regular;
+
     private observer_kwh: BehaviorSubject<PrometheusReply>;
     private observer_kwh2: BehaviorSubject<PrometheusReply>;
     private observer_watt_today: BehaviorSubject<PrometheusReply>;
@@ -49,11 +100,22 @@ export class MetricsComponent implements OnInit {
     constructor(
         private _http: HttpClient,
         private _node_svc: NodesService,
-        private _prom_svc: PrometheusService
-    ) { }
+        private _prom_svc: PrometheusService,
+        private breakpointObserver: BreakpointObserver
+    ) {
+        this.isHandset$.subscribe(this._changeLayout.bind(this));
+    }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this._setupMetrics();
+    }
+
+    private _changeLayout(handset_like: boolean): void {
+        if (handset_like) {
+            this.layout = this._layout_handset;
+        } else {
+            this.layout = this._layout_regular;
+        }
     }
 
     private _setupMetrics(): void {
