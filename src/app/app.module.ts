@@ -49,6 +49,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MeterDetailsComponent } from './nodes/meter-details/meter-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DeviceListComponent } from './devices/device-list/device-list.component';
+import { DeviceCapabilitiesComponent } from './devices/device-capabilities/device-capabilities.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { DeviceListComponent } from './devices/device-list/device-list.component
     MeterDetailsComponent,
     DashboardComponent,
     DeviceListComponent,
+    DeviceCapabilitiesComponent,
   ],
   imports: [
     BrowserModule,

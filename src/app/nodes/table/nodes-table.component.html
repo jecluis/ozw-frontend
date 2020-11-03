@@ -68,24 +68,7 @@
     <ng-container matColumnDef="capabilities">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Capabilities</th>
       <td mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.capabilities.is_controller"
-          matTooltip="controller">sports_esports</mat-icon>
-        <mat-icon
-          *ngIf="row.capabilities.is_primary_controller"
-          matTooltip="primary controller">star_rate</mat-icon>
-        <mat-icon *ngIf="row.properties.is_routing"
-          matTooltip="routing">sync_alt</mat-icon>
-        <mat-icon *ngIf="row.properties.is_listening"
-          matTooltip="listening">hearing</mat-icon>
-        <mat-icon *ngIf="row.properties.is_beaming"
-          matTooltip="beaming">wifi</mat-icon>
-        <mat-icon *ngIf="row.properties.is_security"
-          matTooltip="security device">security</mat-icon>
-        <mat-icon *ngIf="row.properties.is_frequent_listening"
-          matTooltip="frequent listening">hearing</mat-icon>
-        <mat-icon *ngIf="row.properties.is_zwaveplus"
-          matTooltip="zwave+">add_circle_outline</mat-icon>
+        <app-device-capabilities [node]="row"></app-device-capabilities>
       </td>
     </ng-container>
     <ng-container matColumnDef="lastseen">
