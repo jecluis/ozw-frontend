@@ -8,17 +8,20 @@
     <a mat-tab-link
         (click)="scope = 'user'"
         [active]="scope === 'user'">
-      <span>Info</span>
+      <span *ngIf="!(isHandset$ | async)">Info</span>
+      <mat-icon *ngIf="isHandset$|async">info</mat-icon>
     </a>
     <a mat-tab-link
         (click)="scope = 'config'"
         [active]="scope === 'config'">
-      <span>Config</span>
+      <span *ngIf="!(isHandset$ | async)">Config</span>
+      <mat-icon *ngIf="isHandset$|async">settings</mat-icon>
     </a>
     <a mat-tab-link
         (click)="scope = 'system'"
         [active]="scope === 'system'">
-      <span>System</span>
+      <span *ngIf="!(isHandset$|async)">System</span>
+      <mat-icon *ngIf="isHandset$|async">storage</mat-icon>
     </a>
   </nav>
 </div>

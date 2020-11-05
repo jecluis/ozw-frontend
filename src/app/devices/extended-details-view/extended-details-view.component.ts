@@ -1,7 +1,9 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Location } from '@angular/common';
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Observer } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { NodesService } from 'src/app/nodes/service/nodes-service.service';
 import { NetworkNode } from 'src/app/types/Node';
 
@@ -12,18 +14,30 @@ import { NetworkNode } from 'src/app/types/Node';
 })
 export class ExtendedDetailsViewComponent implements OnInit, OnChanges {
 
+    public isHandset$: Observable<boolean> =
+        this._breakpointObserver.observe([
+            Breakpoints.Handset,
+            // Breakpoints.Medium,
+            Breakpoints.Small
+        ]
+    )
+    .pipe(
+        map(result => result.matches),
+        shareReplay()
+    );
     public node_id: number = -1;
-    private _node?: NetworkNode = undefined;
     public scope: string = "user";
+
+    private _node?: NetworkNode = undefined;
     private _name_subject: BehaviorSubject<string> =
         new BehaviorSubject<string>("Unknown Node");
 
-    public active_section = "info";
 
     constructor(
         private _route: ActivatedRoute,
         private _nodes_svc: NodesService,
-        private _router: Router
+        private _router: Router,
+        private _breakpointObserver: BreakpointObserver
     ) { }
 
     public ngOnInit(): void {
