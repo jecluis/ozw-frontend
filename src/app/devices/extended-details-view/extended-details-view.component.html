@@ -3,7 +3,7 @@
     <mat-icon>keyboard_arrow_left</mat-icon>
   </button>
   <span style="font-size: 20px;">{{getNodeName() | async}}</span>
-  <mat-divider [vertical]="true"></mat-divider>
+  <mat-divider [vertical]="true"></mat-divider> 
   <nav mat-tab-nav-bar>
     <a mat-tab-link
         (click)="scope = 'user'"
@@ -23,6 +23,6 @@
   </nav>
 </div>
 <div class="container">
-<app-node-details-table [node_id]="node_id"
-    [scope]="scope"></app-node-details-table>
+  <app-node-details-table [node_id]="node_id"
+        [scope]="scope"></app-node-details-table>
 </div>

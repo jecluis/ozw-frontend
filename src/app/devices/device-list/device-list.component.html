@@ -4,23 +4,31 @@
     <div fxLayout="column">
       <mat-toolbar>
         <span *ngIf="!(isHandset$ | async)">Devices</span>
-        <mat-nav-list fxLayout="row">
-          <mat-list-item (click)="device_type = 'all'">
-            <span class="menu-item">All</span>
-          </mat-list-item>
-          <mat-list-item (click)="device_type = 'switch'">
-            <span class="menu-item" *ngIf="!(isHandset$|async)">Switches</span>
+        <nav mat-tab-nav-bar autosize>
+          <a mat-tab-link
+              (click)="device_type = 'all'"
+              [active]="device_type === 'all'">
+            <span>All</span>
+          </a>
+          <a mat-tab-link
+              (click)="device_type = 'switch'"
+              [active]="device_type === 'switch'">
+            <span *ngIf="!(isHandset$|async)">Switches</span>
             <mat-icon *ngIf="(isHandset$|async)">outlet</mat-icon>
-          </mat-list-item>
-          <mat-list-item (click)="device_type = 'meter'">
+          </a>
+          <a mat-tab-link
+              (click)="device_type = 'meter'"
+              [active]="device_type === 'meter'">
             <span class="menu-item" *ngIf="!(isHandset$|async)">Meters</span>
             <mat-icon *ngIf="(isHandset$|async)">data_usage</mat-icon>
-          </mat-list-item>
-          <mat-list-item (click)="device_type = 'sensor'">
+          </a>
+          <a mat-tab-link
+              (click)="device_type = 'sensor'"
+              [active]="device_type === 'sensor'">
             <span class="menu-item" *ngIf="!(isHandset$|async)">Sensors</span>
             <mat-icon *ngIf="(isHandset$|async)">group_work</mat-icon>
-          </mat-list-item>
-        </mat-nav-list>
+          </a>
+        </nav>        
       </mat-toolbar>
     </div>
     <div class="container">
