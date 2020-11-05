@@ -51,6 +51,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DeviceListComponent } from './devices/device-list/device-list.component';
 import { DeviceCapabilitiesComponent } from './devices/device-capabilities/device-capabilities.component';
 import { ExtendedDetailsViewComponent } from './devices/extended-details-view/extended-details-view.component';
+import { DeviceItemComponent } from './devices/device-item/device-item.component';
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import { ExtendedDetailsViewComponent } from './devices/extended-details-view/ex
     DeviceListComponent,
     DeviceCapabilitiesComponent,
     ExtendedDetailsViewComponent,
+    DeviceItemComponent,
   ],
   imports: [
     BrowserModule,

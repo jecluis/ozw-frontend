@@ -16,22 +16,22 @@ export class DeviceCapabilitiesComponent implements OnInit {
     }
 
     public isController(): boolean {
-        return this.node.capabilities.is_controller;
+        return this.node?.capabilities.is_controller;
     }
 
     public isPrimary(): boolean {
-        return this.node.capabilities.is_primary_controller;
+        return this.node?.capabilities.is_primary_controller;
     }
 
     public isRouting(): boolean {
-        return this.node.properties.is_routing;
+        return this.node?.properties.is_routing;
     }
 
     public isListening(): boolean {
-        return this.node.properties.is_listening;
+        return this.node?.properties.is_listening;
     }
 
     public isBeaming(): boolean {
-        return this.node.properties.is_beaming;
+        return this.node?.properties.is_beaming;
     }
 }

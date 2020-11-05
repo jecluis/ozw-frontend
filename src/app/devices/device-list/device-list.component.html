@@ -6,36 +6,42 @@
         <span *ngIf="!(isHandset$ | async)">Devices</span>
         <nav mat-tab-nav-bar autosize>
           <a mat-tab-link
-              (click)="device_type = 'all'"
-              [active]="device_type === 'all'">
+              (click)="selectDeviceType('all')"
+              [active]="isDeviceType('all')">
             <span>All</span>
           </a>
           <a mat-tab-link
-              (click)="device_type = 'switch'"
-              [active]="device_type === 'switch'">
+              (click)="selectDeviceType('switch')"
+              [active]="isDeviceType('switch')">
             <span *ngIf="!(isHandset$|async)">Switches</span>
             <mat-icon *ngIf="(isHandset$|async)">outlet</mat-icon>
           </a>
           <a mat-tab-link
-              (click)="device_type = 'meter'"
-              [active]="device_type === 'meter'">
+              (click)="selectDeviceType('meter')"
+              [active]="isDeviceType('meter')">
             <span class="menu-item" *ngIf="!(isHandset$|async)">Meters</span>
             <mat-icon *ngIf="(isHandset$|async)">data_usage</mat-icon>
           </a>
           <a mat-tab-link
-              (click)="device_type = 'sensor'"
-              [active]="device_type === 'sensor'">
+              (click)="selectDeviceType('sensor')"
+              [active]="isDeviceType('sensor')">
             <span class="menu-item" *ngIf="!(isHandset$|async)">Sensors</span>
             <mat-icon *ngIf="(isHandset$|async)">group_work</mat-icon>
           </a>
         </nav>        
       </mat-toolbar>
     </div>
-    <div class="container">
+    <div class=container>
+      <mat-accordion>
+        <app-device-item *ngFor="let node of nodes_subject|async" [node]="node">
+        </app-device-item>
+      </mat-accordion>
+    </div>
+    <!-- <div class="container">
       <app-nodes-table
           [node_type]="device_type"
           (selected_node)="selectNode($event)"></app-nodes-table>
-    </div>
+    </div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>
 </div>

@@ -1,0 +1,63 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon *ngIf="isAlive()"
+          style="color: green" class="state-icon"
+          matTooltip="Alive">
+        check
+      </mat-icon>
+      <mat-icon *ngIf="isAwake()"
+          style="color: indigo" class="state-icon"
+          matTooltip="Awake">
+        visibility
+      </mat-icon>
+      <mat-icon *ngIf="isFailed()"
+          style="color: red" class="state-icon"
+          matTooltip="Failed">
+        error_outline
+      </mat-icon>
+      <mat-icon *ngIf="isAsleep()"
+          style="color: grey" class="state-icon"
+          matTooltip="Sleeping">
+        visibility_off
+      </mat-icon>
+      <span>{{getName()}}</span>
+    </mat-panel-title>
+    <mat-panel-description fxLayout="row" fxLayoutAlign="space-between center">
+      <span></span>
+      <div>
+        <mat-icon *ngIf="node.capabilities.is_primary_controller">star_rate</mat-icon>
+        <mat-icon *ngIf="node.type.is_switch"
+            [class.switch-on]="(getSwitchState()|async) === true"
+            [class.switch-off]="(getSwitchState()|async) === false"
+            [class.switch-unknown]="(getSwitchState()|async) === undefined">
+          power_settings_new
+        </mat-icon>
+        <mat-icon *ngIf="node.type.is_meter">data_usage</mat-icon>
+      </div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <ng-template matExpansionPanelContent> <!-- lazy load-->
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="column" fxLayoutAlign="space-between center">
+        <span>{{getProduct()}}</span>
+        <span *ngIf="hasName()">Node {{node.id}}</span>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="space-between center">
+        <app-device-capabilities [node]="node"></app-device-capabilities>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="space-between center">
+        <span>Power: 1000W</span>
+        <span>Voltage: 220V</span>
+        <span>Current: 1.0A</span>
+      </div>
+    </div>
+    <mat-divider style="margin-top: 20px; margin-bottom: 10px"></mat-divider>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span><i>Last updated: 30 seconds ago</i></span>
+      <span></span>
+      <span>More</span>
+    </div>
+  </ng-template>
+</mat-expansion-panel>
