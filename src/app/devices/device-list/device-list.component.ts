@@ -44,7 +44,7 @@ export class DeviceListComponent implements OnInit {
 
     public selectNode(event: NetworkNode): void {
         console.log("device-list > selected ", event);
-        this.router.navigate(['/device-details', {nodeid: event.id}]);
+        this.router.navigate(['/extended-device-details', event.id]);
     }
 
 }

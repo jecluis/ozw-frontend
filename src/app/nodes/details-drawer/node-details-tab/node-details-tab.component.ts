@@ -20,6 +20,8 @@ export class NodeDetailsTabComponent implements OnInit, OnChanges {
     @Input() node_is_controller: boolean;
     @Output() close_details = new EventEmitter<boolean>();
 
+    private _createdByRoute: boolean = false;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router
@@ -30,6 +32,7 @@ export class NodeDetailsTabComponent implements OnInit, OnChanges {
 
         if (this.route.snapshot.paramMap.has("nodeid")) {
             this.node_id = +(this.route.snapshot.paramMap.get("nodeid"));
+            this._createdByRoute = true;
         }
         console.log("show details for node " + this.node_id);
     }
@@ -39,6 +42,10 @@ export class NodeDetailsTabComponent implements OnInit, OnChanges {
     public closeDetails(): void {
         console.log("close details tabs");
         this.close_details.emit(true);
+    }
+
+    public isRouted(): boolean {
+        return this._createdByRoute;
     }
 
 }

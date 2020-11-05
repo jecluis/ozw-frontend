@@ -50,6 +50,7 @@ import { MeterDetailsComponent } from './nodes/meter-details/meter-details.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DeviceListComponent } from './devices/device-list/device-list.component';
 import { DeviceCapabilitiesComponent } from './devices/device-capabilities/device-capabilities.component';
+import { ExtendedDetailsViewComponent } from './devices/extended-details-view/extended-details-view.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { DeviceCapabilitiesComponent } from './devices/device-capabilities/devic
     DashboardComponent,
     DeviceListComponent,
     DeviceCapabilitiesComponent,
+    ExtendedDetailsViewComponent,
   ],
   imports: [
     BrowserModule,
