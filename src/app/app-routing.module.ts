@@ -6,9 +6,7 @@ import { NetworkViewComponent } from './network/view/network-view.component';
 import { ConfigViewComponent } from './config/view/config-view.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { DeviceListComponent } from './devices/device-list/device-list.component';
-import { NodeDetailsTabComponent } from './nodes/details-drawer/node-details-tab/node-details-tab.component';
 import { ExtendedDetailsViewComponent } from './devices/extended-details-view/extended-details-view.component';
-import { NodesTableComponent } from './nodes/table/nodes-table.component';
 
 
 const routes: Routes = [
