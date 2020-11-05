@@ -1,12 +1,12 @@
-import { Component, OnInit, OnChanges, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Observable, Observer } from 'rxjs';
-import { NodeDetailsTableComponent } from '../node-details-table/node-details-table.component';
+import {
+    Component, OnInit, OnChanges, Input,
+    Output, EventEmitter
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface NodeDetailsTab {
-
-  label: string;
-  content: string;
-
+    label: string;
+    content: string;
 }
 
 @Component({
@@ -16,24 +16,29 @@ export interface NodeDetailsTab {
 })
 export class NodeDetailsTabComponent implements OnInit, OnChanges {
 
-  @Input() node_id: number;
-  @Input() node_is_controller: boolean;
-  @Output() close_details = new EventEmitter<boolean>();
+    @Input() node_id: number;
+    @Input() node_is_controller: boolean;
+    @Output() close_details = new EventEmitter<boolean>();
 
-  constructor() { }
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router
+    ) { }
 
 
-  ngOnInit(): void {
-    console.log("show details for node "+this.node_id);
-  }
-  
-  ngOnChanges() {
-   
-  }
+    public ngOnInit(): void {
 
-  closeDetails() {
-    console.log("close details tabs");
-    this.close_details.emit(true);
-  }
+        if (this.route.snapshot.paramMap.has("nodeid")) {
+            this.node_id = +(this.route.snapshot.paramMap.get("nodeid"));
+        }
+        console.log("show details for node " + this.node_id);
+    }
+
+    public ngOnChanges(): void { }
+
+    public closeDetails(): void {
+        console.log("close details tabs");
+        this.close_details.emit(true);
+    }
 
 }

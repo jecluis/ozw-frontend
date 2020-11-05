@@ -24,7 +24,9 @@
       </mat-toolbar>
     </div>
     <div class="container">
-      <app-nodes-table [node_type]="device_type"></app-nodes-table>
+      <app-nodes-table
+          [node_type]="device_type"
+          (selected_node)="selectNode($event)"></app-nodes-table>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
