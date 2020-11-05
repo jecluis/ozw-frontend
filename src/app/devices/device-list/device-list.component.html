@@ -33,7 +33,9 @@
     </div>
     <div class=container>
       <mat-accordion>
-        <app-device-item *ngFor="let node of nodes_subject|async" [node]="node">
+        <app-device-item *ngFor="let node of nodes_subject|async"
+            [node]="node"
+            (node_selected)="selectNode($event)">
         </app-device-item>
       </mat-accordion>
     </div>

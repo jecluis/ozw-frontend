@@ -42,7 +42,7 @@
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="column" fxLayoutAlign="space-between center">
         <span>{{getProduct()}}</span>
-        <span *ngIf="hasName()">Node {{node.id}}</span>
+        <span>Node {{node.id}}</span>
       </div>
       <div fxLayout="column" fxLayoutAlign="space-between center">
         <app-device-capabilities [node]="node"></app-device-capabilities>
@@ -57,7 +57,9 @@
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <span><i>Last updated: 30 seconds ago</i></span>
       <span></span>
-      <span>More</span>
+      <button mat-raised-button (click)="showMoreInfo()">
+        More
+      </button>
     </div>
   </ng-template>
 </mat-expansion-panel>

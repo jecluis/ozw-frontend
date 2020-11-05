@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NodesService } from 'src/app/nodes/service/nodes-service.service';
 import { ValuesService } from 'src/app/nodes/service/values-service.service';
@@ -13,6 +13,8 @@ import { NetworkValue } from 'src/app/types/Value';
 export class DeviceItemComponent implements OnInit {
 
     @Input() node: NetworkNode;
+    @Output() node_selected: EventEmitter<NetworkNode> =
+        new EventEmitter<NetworkNode>();
 
     private _switch_state: BehaviorSubject<boolean|undefined> =
         new BehaviorSubject<boolean|undefined>(undefined);
@@ -44,7 +46,7 @@ export class DeviceItemComponent implements OnInit {
         if (this.node.info.name && this.node.info.name !== "") {
             return this.node.info.name;
         }
-        return `Node ${this.node.id}`;
+        return `${this.node.info.product}`;
     }
 
     public hasName(): boolean {
@@ -77,5 +79,9 @@ export class DeviceItemComponent implements OnInit {
 
     public isAsleep(): boolean {
         return !this.isAlive() && !this.isAwake() && !this.isFailed();
+    }
+
+    public showMoreInfo(): void {
+        this.node_selected.next(this.node);
     }
 }
