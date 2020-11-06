@@ -55,7 +55,7 @@
     </div>
     <mat-divider style="margin-top: 20px; margin-bottom: 10px"></mat-divider>
     <div fxLayout="row" fxLayoutAlign="space-between center">
-      <span><i>Last updated: 30 seconds ago</i></span>
+      <span style="font-size: 12px"><i>Last updated: {{getUpdatedAt()}}</i></span>
       <span></span>
       <button mat-raised-button (click)="showMoreInfo()">
         More
