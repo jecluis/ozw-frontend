@@ -36,3 +36,10 @@
 .sidenav-menu-spacer {
     height: 100vh;
 }
+
+.sidenav-item-active,
+.sidenav-item-active:hover,
+.sidenav-item-active:focus {
+    color: #fafafa;
+    background: #3f51b5;
+}

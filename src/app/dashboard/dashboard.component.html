@@ -25,31 +25,36 @@
 
       <!-- menu items -->
       <mat-nav-list>
-        <a mat-list-item routerLink="/metrics" routerLinkActive="active"
+        <a mat-list-item routerLink="/metrics"
+            [routerLinkActive]="['sidenav-item-active']"
             [matTooltipDisabled]="isExpanded()" matTooltip="Metrics"
             matTooltipPosition="right">
           <mat-icon>data_usage</mat-icon>
           <span class="menu-item" *ngIf="isExpanded()">Metrics</span>
         </a>
-        <a mat-list-item routerLink="/devices" routerLinkActive="active"
+        <a mat-list-item routerLink="/devices"
+            [routerLinkActive]="['sidenav-item-active']"
             [matTooltipDisabled]="isExpanded()" matTooltip="Device List"
             matTooltipPosition="right">
           <mat-icon>devices</mat-icon>
           <span class="menu-item" *ngIf="isExpanded()">Devices</span>
         </a>
-        <a mat-list-item routerLink="/network" routerLinkActive="active"
+        <a mat-list-item routerLink="/network"
+            [routerLinkActive]="['sidenav-item-active']"
             [matTooltipDisabled]="isExpanded()" matTooltip="Network"
             matTooltipPosition="right">
           <mat-icon>router</mat-icon>
           <span class="menu-item" *ngIf="isExpanded()">Network</span>
         </a>
-        <a mat-list-item routerLink="/topology" routerLinkActive="active"
+        <a mat-list-item routerLink="/topology"
+            [routerLinkActive]="['sidenav-item-active']"
             [matTooltipDisabled]="isExpanded()" matTooltip="Topology"
             matTooltipPosition="right">
           <mat-icon>device_hub</mat-icon>
           <span class="menu-item" *ngIf="isExpanded()">Topology</span>
         </a>
-        <a mat-list-item routerLink="/config" routerLinkActive="active"
+        <a mat-list-item routerLink="/config"
+            [routerLinkActive]="['sidenav-item-active']"
             [matTooltipDisabled]="isExpanded()" matTooltip="Config"
             matTooltipPosition="right">
           <mat-icon>settings</mat-icon>
