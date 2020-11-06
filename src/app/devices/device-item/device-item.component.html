@@ -39,15 +39,15 @@
   </mat-expansion-panel-header>
 
   <ng-template matExpansionPanelContent> <!-- lazy load-->
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div fxLayout="column" fxLayoutAlign="space-between center">
+    <div [fxLayout]="orientation" fxLayoutAlign="space-between">
+      <div fxLayout="column" fxLayoutAlign="space-between start">
         <span>{{getProduct()}}</span>
         <span>Node {{node.id}}</span>
       </div>
       <div fxLayout="column" fxLayoutAlign="space-between center">
         <app-device-capabilities [node]="node"></app-device-capabilities>
       </div>
-      <div fxLayout="column" fxLayoutAlign="space-between center">
+      <div fxLayout="column" fxLayoutAlign="space-between end">
         <span>Power: 1000W</span>
         <span>Voltage: 220V</span>
         <span>Current: 1.0A</span>

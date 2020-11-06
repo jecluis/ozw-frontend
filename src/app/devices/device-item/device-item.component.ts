@@ -1,5 +1,7 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { NodesService } from 'src/app/nodes/service/nodes-service.service';
 import { ValuesService } from 'src/app/nodes/service/values-service.service';
 import { NetworkNode, NetworkNodeStateEnum } from 'src/app/types/Node';
@@ -12,15 +14,29 @@ import { NetworkValue } from 'src/app/types/Value';
 })
 export class DeviceItemComponent implements OnInit {
 
-    @Input() node: NetworkNode;
-    @Output() node_selected: EventEmitter<NetworkNode> =
+    @Input() public node: NetworkNode;
+    @Output() public node_selected: EventEmitter<NetworkNode> =
         new EventEmitter<NetworkNode>();
+
+    public isHandset$: Observable<boolean> =
+        this._breakpointObserver.observe([
+            Breakpoints.Handset,
+            // Breakpoints.Medium,
+            Breakpoints.Small
+        ]
+    )
+    .pipe(
+        map(result => result.matches),
+        shareReplay()
+    );
+    public orientation: string = "row";
 
     private _switch_state: BehaviorSubject<boolean|undefined> =
         new BehaviorSubject<boolean|undefined>(undefined);
 
     constructor(
-        private _values_svc: ValuesService
+        private _values_svc: ValuesService,
+        private _breakpointObserver: BreakpointObserver
     ) { }
 
     public ngOnInit(): void {
@@ -37,6 +53,11 @@ export class DeviceItemComponent implements OnInit {
                 }
             });
         }
+        this.isHandset$.subscribe({
+            next: (is_handset: boolean) => {
+                this.orientation = (is_handset ? "column" : "row");
+            }
+        });
     }
 
     public getName(): string {
