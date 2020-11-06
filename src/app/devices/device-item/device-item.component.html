@@ -47,11 +47,10 @@
       <div fxLayout="column" fxLayoutAlign="space-between center">
         <app-device-capabilities [node]="node"></app-device-capabilities>
       </div>
-      <div fxLayout="column" fxLayoutAlign="space-between end">
-        <span>Power: 1000W</span>
-        <span>Voltage: 220V</span>
-        <span>Current: 1.0A</span>
-      </div>
+      <app-device-meter-item
+          *ngIf="node.type.is_meter"
+          [node]="node">
+      </app-device-meter-item>
     </div>
     <mat-divider style="margin-top: 20px; margin-bottom: 10px"></mat-divider>
     <div fxLayout="row" fxLayoutAlign="space-between center">

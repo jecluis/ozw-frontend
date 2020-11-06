@@ -299,6 +299,10 @@ export class ValuesService {
         );
     }
 
+    public hasValueID(nodeid: number, valueid: string): boolean {
+        return this._valueIDExists(nodeid, valueid);
+    }
+
     public getSwitchState(
         nodeid: number
     ): BehaviorSubject<NetworkValue|undefined> {

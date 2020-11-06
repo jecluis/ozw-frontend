@@ -52,6 +52,7 @@ import { DeviceListComponent } from './devices/device-list/device-list.component
 import { DeviceCapabilitiesComponent } from './devices/device-capabilities/device-capabilities.component';
 import { ExtendedDetailsViewComponent } from './devices/extended-details-view/extended-details-view.component';
 import { DeviceItemComponent } from './devices/device-item/device-item.component';
+import { DeviceMeterItemComponent } from './devices/device-type/device-meter-item/device-meter-item.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { DeviceItemComponent } from './devices/device-item/device-item.component
     DeviceCapabilitiesComponent,
     ExtendedDetailsViewComponent,
     DeviceItemComponent,
+    DeviceMeterItemComponent,
   ],
   imports: [
     BrowserModule,

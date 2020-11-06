@@ -1,0 +1,19 @@
+<div *ngIf="isElectric()">
+  <div>
+    <mat-icon style="font-size: 16px;">flash_on</mat-icon>
+    <span style="font-size: 16px;">Electric values</span>
+  </div>
+  <mat-divider></mat-divider>
+  <div *ngIf="hasEnergy()">
+    <span>Energy:</span>
+    <span>{{getEnergy()|async}}</span>
+  </div>
+  <div *ngIf="hasTension()">
+    <span>Tension:</span>
+    <span>{{getTension()|async}}</span>
+  </div>
+  <div *ngIf="hasCurrent()">
+    <span>Current:</span>
+    <span>{{getCurrent()|async}}</span>
+  </div>
+</div>
