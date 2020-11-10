@@ -9,19 +9,7 @@
 
     <mat-grid-tile [colspan]="layout.cards.last_30d_kwh.cols"
                    [rowspan]="layout.cards.last_30d_kwh.rows">
-      <mat-card class="metrics-card">
-        <h2>30 Days Consumption</h2>
-        <div style="position: absolute; left: 0; right: 0; top: 70px; bottom: 30px">
-        <ngx-charts-gauge
-          [legendTitle]="'kWh'"
-          [legend]="false"
-          [legendPosition]="'right'"
-          [results]="kWh"
-          [units]="'kWh'"
-          [max]="kWh_max">
-        </ngx-charts-gauge>
-      </div>
-      </mat-card>
+      <app-last30-days-kwh-meter></app-last30-days-kwh-meter>
     </mat-grid-tile>
     
     <mat-grid-tile [colspan]="layout.cards.last_30d_slots.cols"

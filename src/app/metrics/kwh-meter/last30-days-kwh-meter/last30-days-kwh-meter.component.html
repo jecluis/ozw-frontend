@@ -1,0 +1,12 @@
+<mat-card class="metrics-card">
+  <h2>30 Days Consumption</h2>
+  <div style="position: absolute; left: 0; right: 0; top: 70px; bottom: 30px">
+  <ngx-charts-gauge
+    [legendTitle]="'kWh'"
+    [legend]="false"
+    [legendPosition]="'right'"
+    [results]="kWh"
+    [units]="'kWh'">
+  </ngx-charts-gauge>
+</div>
+</mat-card>
