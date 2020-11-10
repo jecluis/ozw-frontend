@@ -53,6 +53,7 @@ import { DeviceCapabilitiesComponent } from './devices/device-capabilities/devic
 import { ExtendedDetailsViewComponent } from './devices/extended-details-view/extended-details-view.component';
 import { DeviceItemComponent } from './devices/device-item/device-item.component';
 import { DeviceMeterItemComponent } from './devices/device-type/device-meter-item/device-meter-item.component';
+import { DailyWattageMetricsComponent } from './metrics/daily-wattage/daily-wattage-metrics/daily-wattage-metrics.component';
 
 
 @NgModule({
@@ -81,6 +82,7 @@ import { DeviceMeterItemComponent } from './devices/device-type/device-meter-ite
     ExtendedDetailsViewComponent,
     DeviceItemComponent,
     DeviceMeterItemComponent,
+    DailyWattageMetricsComponent,
   ],
   imports: [
     BrowserModule,

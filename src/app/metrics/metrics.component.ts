@@ -65,8 +65,6 @@ export class MetricsComponent implements OnInit {
     public kWh: ChartValue[] = [];
     public kWh_max: number = 0;
 
-    public watt_today: LineSeriesEntry[] = [];
-
     public kWh_per_day: LineSeriesEntry[] = [];
     public kWh_per_day_series: {[id: string]: LineSeriesEntry} = {};
 
@@ -93,9 +91,7 @@ export class MetricsComponent implements OnInit {
 
     private observer_kwh: BehaviorSubject<PrometheusReply>;
     private observer_kwh2: BehaviorSubject<PrometheusReply>;
-    private observer_watt_today: BehaviorSubject<PrometheusReply>;
     private subscription_kwh: Subscription;
-    private subscription_watt_today: Subscription;
 
     constructor(
         private _http: HttpClient,
@@ -120,31 +116,6 @@ export class MetricsComponent implements OnInit {
 
     private _setupMetrics(): void {
         this._setupMetricsKWh();
-        this._setupMetricsWattToday();
-    }
-
-    private _setupMetricsWattToday(): void {
-        const now = new Date();
-        const start_date =
-            new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const end_date =
-            new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-
-        const query = "home_energy_consumption_W";
-        const start = start_date.toISOString();
-        const end = end_date.toISOString();
-        const full_query = `query_range?query=${query}&start=${start}&end=${end}&step=10m`;
-        this.observer_watt_today =
-            this._prom_svc.setQuery("watt-today", full_query);
-        this.subscription_watt_today = this.observer_watt_today.subscribe({
-            next: (res: PrometheusReply) => {
-                console.debug("watt result for day: ", res);
-                if (!('data' in res)) {
-                    return;
-                }
-                this._updateWattToday(res.data);
-            }
-        });
     }
 
     private _setupMetricsKWh(): void {
@@ -245,43 +216,5 @@ export class MetricsComponent implements OnInit {
             piechart.push(entries[k]);
         });
         this.kWh = [...piechart];
-    }
-
-    private _updateWattToday(data: PrometheusReplyData): void {
-        const watts = [];
-        const result = data.result as PrometheusMatrixReplyResult[];
-        result.forEach( (entry: PrometheusMatrixReplyResult) => {
-            const node_name = this._getNameFromNode(entry.metric.node);
-            const series_entry: LineSeriesEntry = {
-                name: node_name,
-                series: []
-            };
-            entry.values.forEach( (value: PrometheusMatrixResult) => {
-                const date = new Date(+value[0] * 1000);
-                let watt = +(value[1] as string);
-                watt = Math.round((watt + Number.EPSILON) * 100) / 100;
-                series_entry.series.push({
-                    name: date.toISOString(),
-                    value: watt
-                });
-            });
-            watts.push(series_entry);
-        });
-        this.watt_today = [...watts];
-        console.debug("watts today: ", this.watt_today);
-    }
-
-    public wattChartFormatXAxis(value: string): string {
-        const date = new Date(value);
-        const minutes = date.getMinutes();
-        if (minutes === 0 || minutes === 30) {
-            return `${date.getHours()}h${minutes}m`;
-        }
-        return "";
-    }
-
-    public getTimeFromISODate(datestr: string): string {
-        const date = new Date(datestr);
-        return `${date.getHours()}h${date.getMinutes()}m`;
     }
 }

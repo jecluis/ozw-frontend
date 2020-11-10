@@ -1,0 +1,30 @@
+<mat-card class="metrics-card">
+  <h2>Energy Consumption Today</h2>
+  <mat-card-content>
+  <div class="metrics-card-content">
+    <ngx-charts-line-chart
+      [legendTitle]="'Wattage'"
+      [legend]="!(isHandset$|async)"
+      [results]="watt_today"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxisLabel]="'Day'"
+      [yAxisLabel]="'Watt'"          
+      [yAxis]="true"
+      [xAxis]="true"
+      [gradient]="true"
+      [xAxisTickFormatting]="formatXAxis"
+      [tooltipDisabled]="(isHandset$|async)"
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <div>
+          <span>
+            {{model.series}} @ {{getTimeFromISODate(model.name)}}
+          </span><br/>
+          <span>{{model.value}}W</span>
+        </div>
+      </ng-template>
+    </ngx-charts-line-chart>
+  </div>
+</mat-card-content>
+</mat-card>
